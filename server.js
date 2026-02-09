@@ -4,11 +4,13 @@ const path = require('path');
 const mongoose = require('mongoose');
 const { OAuth2Client } = require('google-auth-library');
 const app = express();
+const cors = require('cors');
 const PORT = process.env.PORT || 3001;
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // ===== MIDDLEWARE =====
+app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
 app.use(express.static(path.join(__dirname, 'public')));
