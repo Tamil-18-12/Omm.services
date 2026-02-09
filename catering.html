@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering Service | OM Service</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Clerk Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"
+        data-clerk-publishable-key="pk_test_ZXZvbHZlZC1ib2EtMS5jbGVyay5hY2NvdW50cy5kZXYk" crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo-removebg-preview.png" alt="OM Service Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="catering.html">Catering</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="navbar-nav ms-auto">
+                    <div id="user-button"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5 mb-5">
+        <h1 class="hero-title text-center mb-5 mt-4">Premium Catering</h1>
+
+        <!-- Slideshow -->
+        <div class="slideshow-container mx-auto mb-5" style="max-width: 900px;">
+            <div class="slide active" style="background-image: url('11.jpg');"></div>
+            <div class="slide" style="background-image: url('12.jpeg');"></div>
+            <div class="slide" style="background-image: url('13.jpeg');"></div>
+            <div class="slide" style="background-image: url('14.png');"></div>
+            <div class="slide" style="background-image: url('18.jpg');"></div>
+            <div class="slide" style="background-image: url('15.jpeg');"></div>
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="changeSlide(-1)"><i class="bi bi-chevron-left"></i></button>
+                <button class="slide-btn" onclick="changeSlide(1)"><i class="bi bi-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Services -->
+        <div class="row g-5 justify-content-center">
+            <div class="col-lg-10">
+                <div class="glass-panel p-0 d-flex flex-column flex-md-row overflow-hidden hover-lift"
+                    onclick="openBookingModal('Authentic Banana Leaf')">
+                    <div class="col-md-5" style="min-height: 250px;">
+                        <img src="banana.avif" alt="Banana Leaf Service" class="w-100 h-100" style="object-fit: cover;">
+                    </div>
+                    <div class="col-md-7 p-4 p-md-5 d-flex flex-column justify-content-center">
+                        <span class="badge bg-gold text-dark mb-2 align-self-start">Traditional</span>
+                        <h2 class="text-gold fw-bold mb-3">Authentic Banana Leaf</h2>
+                        <p class="text-white-50 mb-4">Experience the traditional taste served on pristine banana leaves
+                            for your most cherished events.</p>
+                        <button class="btn-secondary-glow align-self-start"
+                            onclick="event.stopPropagation(); openMenuModal('leaf')">
+                            <i class="bi bi-book me-2"></i>View Menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-10">
+                <div class="glass-panel p-0 d-flex flex-column flex-md-row overflow-hidden hover-lift"
+                    onclick="openBookingModal('Exquisite Buffet Service')">
+                    <div class="col-md-5" style="min-height: 250px;">
+                        <img src="buffet.jpg" alt="Buffet Service" class="w-100 h-100" style="object-fit: cover;">
+                    </div>
+                    <div class="col-md-7 p-4 p-md-5 d-flex flex-column justify-content-center">
+                        <span class="badge bg-gold text-dark mb-2 align-self-start">Modern</span>
+                        <h2 class="text-gold fw-bold mb-3">Exquisite Buffet Service</h2>
+                        <p class="text-white-50 mb-4">A grand feast with a wide array of exquisite dishes, perfect for
+                            all your special occasions.</p>
+                        <button class="btn-secondary-glow align-self-start"
+                            onclick="event.stopPropagation(); openMenuModal('buffet')">
+                            <i class="bi bi-book me-2"></i>View Menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <button class="btn-primary-glow btn-lg px-5" onclick="openBookingModal('General Inquiry')">
+                Book Your Event Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Premium Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content premium-booking">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title" id="selectedServiceTitle"><i class="fas fa-utensils"></i> Book Service
+                        </h5>
+                        <p class="mb-0 text-white-50 small ms-4">Fill in the details to confirm your reservation</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 p-md-5">
+
+                    <!-- Context Banner -->
+                    <div class="context-banner">
+                        <i class="fas fa-concierge-bell me-2"></i> <span id="displayService">Select Service</span>
+                    </div>
+
+                    <form id="bookingForm" onsubmit="handleBooking(event)">
+
+                        <!-- Personal Info -->
+                        <div class="form-section-title">
+                            <i class="fas fa-user-circle"></i> Personal Information
+                        </div>
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" class="form-control-premium" id="name" required
+                                    placeholder="Enter full name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-calendar-alt"></i> Age</label>
+                                <input type="number" class="form-control-premium" id="age" required
+                                    placeholder="Your age">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-phone"></i> Phone Number</label>
+                                <input type="tel" class="form-control-premium" id="phone" required
+                                    placeholder="Enter phone number">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-envelope"></i> Email Address</label>
+                                <input type="email" class="form-control-premium" id="email" required
+                                    placeholder="your@email.com">
+                            </div>
+                            <div class="col-12">
+                                <label class="premium-label"><i class="fas fa-map-pin"></i> Address</label>
+                                <textarea class="form-control-premium" id="address" required rows="2"
+                                    placeholder="Complete address"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Event Info -->
+                        <div class="form-section-title">
+                            <i class="fas fa-glass-cheers"></i> Event Details
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-calendar-day"></i> Date</label>
+                                <input type="date" class="form-control-premium" id="date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-users"></i> Guests</label>
+                                <input type="number" class="form-control-premium" id="guests"
+                                    placeholder="Approx number">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-utensil-spoon"></i> Meal Type</label>
+                                <select class="form-control-premium form-select" id="mealType">
+                                    <option value="All Meals">All Meals</option>
+                                    <option value="Breakfast">Breakfast</option>
+                                    <option value="Lunch">Lunch</option>
+                                    <option value="Dinner">Dinner</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-stopwatch"></i> Duration</label>
+                                <select class="form-control-premium form-select" id="eventDuration">
+                                    <option value="1 Day">1 Day</option>
+                                    <option value="2 Days">2 Days</option>
+                                    <option value="3+ Days">3+ Days</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-premium-action">
+                            Confirm Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Modal -->
+    <div class="modal fade" id="menuModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-content-premium p-0 border-0">
+                <div class="modal-header border-bottom border-white border-opacity-10">
+                    <h5 class="modal-title text-gold fw-bold">Menu Selection</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="menuContent">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-panel border-gold text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-check-circle-fill text-gold" style="font-size: 4rem;"></i>
+                </div>
+                <h3 class="text-white fw-bold mb-2">Booking Confirmed!</h3>
+                <p class="text-white-50">Our team will contact you shortly.</p>
+                <button type="button" class="btn-secondary-glow mt-3" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // --- Dynamic Content Loading ---
+        async function loadDynamicContent() {
+            try {
+                const res = await fetch('/api/services?category=catering');
+                const data = await res.json();
+
+                if (data && data.length > 0) {
+                    const service = data[0];
+
+                    // 1. Update Slideshow
+                    if (service.images && service.images.length > 0) {
+                        const container = document.querySelector('.slideshow-container');
+                        const controls = container.querySelector('.slide-controls');
+
+                        // Remove old slides
+                        container.querySelectorAll('.slide').forEach(el => el.remove());
+
+                        // Add new slides
+                        service.images.forEach((imgUrl, index) => {
+                            const slide = document.createElement('div');
+                            slide.className = `slide ${index === 0 ? 'active' : ''}`;
+                            slide.style.backgroundImage = `url('${imgUrl}')`;
+                            container.insertBefore(slide, controls);
+                        });
+
+                        // Re-init slideshow
+                        initSlideshow();
+                    }
+
+                    // 2. Show Discount Toast/Banner if exists
+                    if (service.discount) {
+                        const discountToast = document.createElement('div');
+                        discountToast.className = 'glass-panel p-3 text-center mb-4 border-gold animation-pulse';
+                        discountToast.style.border = '2px dashed #fcdc3b';
+                        discountToast.style.background = 'rgba(252, 220, 59, 0.1)';
+                        discountToast.innerHTML = `
+                            <h4 class="text-gold m-0 fw-bold"><i class="fas fa-tags me-2"></i> ${service.discount}</h4>
+                            ${service.description ? `<p class="text-white-50 m-0 small mt-1">${service.description}</p>` : ''}
+                        `;
+                        // Insert after hero title
+                        const title = document.querySelector('.hero-title');
+                        title.parentNode.insertBefore(discountToast, title.nextSibling);
+                    }
+                } else {
+                    initSlideshow(); // Fallback to info in HTML
+                }
+            } catch (e) {
+                console.error('Failed to load dynamic content', e);
+                initSlideshow();
+            }
+        }
+
+        // Slideshow Logic
+        let slideIndex = 0;
+        let slideTimer;
+
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            if (slides.length === 0) return;
+
+            // Reset state
+            slideIndex = 0;
+            if (slideTimer) clearTimeout(slideTimer);
+
+            showSlide(0);
+        }
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            if (slides.length === 0) return;
+
+            // Handle index bounds
+            if (index >= slides.length) slideIndex = 0;
+            else if (index < 0) slideIndex = slides.length - 1;
+            else slideIndex = index;
+
+            // Toggle classes
+            slides.forEach(s => s.classList.remove('active'));
+            slides[slideIndex].classList.add('active');
+
+            // Reset timer
+            clearTimeout(slideTimer);
+            slideTimer = setTimeout(() => {
+                showSlide(slideIndex + 1);
+            }, 4000);
+        }
+
+        function changeSlide(n) {
+            showSlide(slideIndex + n);
+        }
+
+        // Modal Logic
+        const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+        const menuModal = new bootstrap.Modal(document.getElementById('menuModal'));
+        let selectedServiceType = '';
+
+        function openBookingModal(serviceName) {
+            // If opening from menu modal, close it first
+            bootstrap.Modal.getInstance(document.getElementById('menuModal'))?.hide();
+
+            selectedServiceType = serviceName || 'General Inquiry';
+            // Title is generic now
+            // document.getElementById('selectedServiceTitle').textContent = `Book: ${selectedServiceType}`;
+
+            const banner = document.getElementById('displayService');
+            if (banner) banner.innerText = selectedServiceType;
+
+            // Auto-fill logic
+            if (window.Clerk && Clerk.user) {
+                // ... fetch profile logic similar to before ...
+                document.getElementById('name').value = Clerk.user.fullName || '';
+                document.getElementById('email').value = Clerk.user.primaryEmailAddress.emailAddress || '';
+                // Try to fetch DB profile
+                fetch(`/api/user/${Clerk.user.id}`)
+                    .then(res => res.json())
+                    .then(user => {
+                        if (user && user.clerkId) {
+                            if (user.phone) document.getElementById('phone').value = user.phone;
+                            if (user.location) document.getElementById('address').value = user.location;
+                            if (user.age) document.getElementById('age').value = user.age;
+                        }
+                    }).catch(e => console.log(e));
+            }
+            bookingModal.show();
+        }
+
+        function openMenuModal(type) {
+            const content = document.getElementById('menuContent');
+            let html = '';
+
+            if (type === 'leaf') {
+                html = `
+                    <!-- Morning Tiffin -->
+                    <div class="mb-4">
+                        <h5 class="text-gold border-bottom border-white border-opacity-10 pb-2 mb-3">
+                            <i class="fas fa-sun me-2"></i>Morning – Banana Leaf Tiffin (Kalyana Kaalai)
+                        </h5>
+                        <p class="small text-white-50 mb-2">Order on leaf (Left → Right):</p>
+                        <div class="menu-grid">
+                            <div class="menu-item"><i class="fas fa-cookie me-1 text-gold"></i> Sweet (Kesari / Laddu)</div>
+                            <div class="menu-item">Idli</div>
+                            <div class="menu-item">Medu Vada</div>
+                            <div class="menu-item">Pongal</div>
+                            <div class="menu-item">Dosa (Optional)</div>
+                            <div class="menu-item">Coconut Chutney</div>
+                            <div class="menu-item">Tomato / Mint Chutney</div>
+                            <div class="menu-item">Sambar</div>
+                            <div class="menu-item"><i class="fas fa-mug-hot me-1 text-gold"></i> Filter Coffee / Tea</div>
+                        </div>
+                    </div>
+
+                    <!-- Lunch Feast -->
+                    <div class="mb-4">
+                        <h5 class="text-gold border-bottom border-white border-opacity-10 pb-2 mb-3">
+                            <i class="fas fa-utensils me-2"></i>Afternoon – Wedding Lunch (Sapadu)
+                        </h5>
+                        <p class="small text-white-50 mb-2">Exact traditional serving order:</p>
+                        <div class="menu-grid">
+                            <div class="menu-item"><i class="fas fa-cookie me-1 text-gold"></i> Sweet (Payasam / Laddu)</div>
+                            <div class="menu-item">Kosambari / Salad</div>
+                            <div class="menu-item">Pickle & Appalam</div>
+                            <div class="menu-item">Thayir Pachadi</div>
+                            <div class="menu-item">Poriyal & Kootu</div>
+                            <div class="menu-item">Rice + Paruppu + Ghee</div>
+                            <div class="menu-item">Rice + Vatha Kulambu</div> <!-- Added Vatha Kulambu -->
+                            <div class="menu-item">Rice + Sambar</div>
+                            <div class="menu-item">Rice + Rasam</div>
+                            <div class="menu-item">Curd Rice</div>
+                            <div class="menu-item">Banana 🍌 & Vethalai Paaku</div>
+                            <div class="menu-item text-gold">Seer Bakshanam (Murukku/Athirasam)</div> <!-- Added Special -->
+                        </div>
+                    </div>
+
+                    <!-- Dinner -->
+                    <div>
+                        <h5 class="text-gold border-bottom border-white border-opacity-10 pb-2 mb-3">
+                            <i class="fas fa-moon me-2"></i>Night – Banana Leaf Dinner
+                        </h5>
+                        <p class="small text-white-50 mb-2">Lighter than lunch, full leaf service:</p>
+                        <div class="menu-grid">
+                            <div class="menu-item"><i class="fas fa-cookie me-1 text-gold"></i> Sweet (Gulab Jamun)</div>
+                            <div class="menu-item">Chapati / Poori</div>
+                            <div class="menu-item">Parotta & Veg Kurma</div> <!-- Added Parotta -->
+                            <div class="menu-item">Veg Biryani / Pulao</div> <!-- Added Biryani -->
+                            <div class="menu-item">Idli / Dosa</div>
+                            <div class="menu-item">Variety Rice (Lemon/Tomato)</div>
+                            <div class="menu-item">Sambar & Chutney</div>
+                            <div class="menu-item"><i class="fas fa-ice-cream me-1 text-gold"></i> Ice Cream / Payasam</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html = `
+                    <!-- Lunch Buffet -->
+                    <div class="mb-4">
+                        <h5 class="text-gold border-bottom border-white border-opacity-10 pb-2 mb-3">
+                            <i class="fas fa-sun me-2"></i>Afternoon – Lunch Buffet
+                        </h5>
+                        
+                        <p class="small text-white-50 text-uppercase fw-bold mt-2">🍚 Variety Rice Counter</p>
+                        <div class="menu-grid">
+                            <div class="menu-item">Lemon Rice</div>
+                            <div class="menu-item">Coconut Rice</div>
+                            <div class="menu-item">Tomato Rice</div>
+                            <div class="menu-item">Tamarind (Puliyodarai)</div>
+                            <div class="menu-item">Curd Rice</div>
+                        </div>
+
+                        <p class="small text-white-50 text-uppercase fw-bold mt-3">🥗 Salad & Extras</p>
+                        <div class="menu-grid">
+                            <div class="menu-item">Kosambari (Cuc/Carrot)</div>
+                            <div class="menu-item">Boiled Veg Salad</div>
+                            <div class="menu-item">Chips (Vazhakkai/Potato)</div>
+                        </div>
+
+                        <p class="small text-white-50 text-uppercase fw-bold mt-3">🍨 Dessert & Drinks</p>
+                        <div class="menu-grid">
+                            <div class="menu-item">Ice Cream</div>
+                            <div class="menu-item">Badam Milk</div>
+                            <div class="menu-item">Rose Milk</div>
+                            <div class="menu-item">Fresh Juice</div>
+                        </div>
+                    </div>
+
+                    <!-- Dinner Buffet -->
+                    <div>
+                        <h5 class="text-gold border-bottom border-white border-opacity-10 pb-2 mb-3">
+                            <i class="fas fa-moon me-2"></i>Night – Dinner / Reception Buffet
+                        </h5>
+
+                        <p class="small text-white-50 text-uppercase fw-bold mt-2">🍞 Indian Bread Counter</p>
+                        <div class="menu-grid">
+                            <div class="menu-item">Chapati / Poori</div>
+                            <div class="menu-item">Butter Naan</div>
+                            <div class="menu-item">Parotta (Live Counter)</div> <!-- Added Live Parotta -->
+                        </div>
+
+                        <p class="small text-white-50 text-uppercase fw-bold mt-3">🍲 Side Dishes</p>
+                        <div class="menu-grid">
+                            <div class="menu-item">Veg Kurma</div>
+                            <div class="menu-item">Channa Masala</div>
+                            <div class="menu-item">Paneer Butter Masala</div>
+                            <div class="menu-item">Mixed Veg Gravy</div>
+                            <div class="menu-item text-gold">Gobi Manchurian (Dry)</div> <!-- Added Gobi -->
+                        </div>
+
+                        <p class="small text-white-50 text-uppercase fw-bold mt-3">🥞 Tiffin Items</p>
+                        <div class="menu-grid">
+                            <div class="menu-item">Mini Dosa / Set Dosa</div>
+                            <div class="menu-item">Idiyappam / Appam</div>
+                        </div>
+
+                        <p class="small text-white-50 text-uppercase fw-bold mt-3">🍚 Rice & Desserts</p>
+                        <div class="menu-grid">
+                            <div class="menu-item">Veg Fried Rice</div>
+                            <div class="menu-item">Jeera Rice</div>
+                            <div class="menu-item text-gold">Gulab Jamun</div>
+                            <div class="menu-item text-gold">Rasgulla</div>
+                            <div class="menu-item text-gold">Fruit Salad</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `<div class="text-center mt-4"><button class="btn-primary-glow" onclick="openBookingModal('${type === 'leaf' ? 'Authentic Banana Leaf' : 'Exquisite Buffet Service'}')">Book This Menu</button></div>`;
+
+            content.innerHTML = html;
+            menuModal.show();
+        }
+
+        async function handleBooking(e) {
+            e.preventDefault();
+
+            // Collect data
+            // Collect data
+            const bookingData = {
+                clerkId: window.Clerk?.user?.id, // Optional if not logged in
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                age: document.getElementById('age').value,
+                address: document.getElementById('address').value,
+                serviceType: 'Catering',
+                serviceName: selectedServiceType,
+                date: document.getElementById('date').value,
+                mealType: document.getElementById('mealType').value,
+                guests: document.getElementById('guests').value,
+                eventDuration: document.getElementById('eventDuration').value, // Schema expects eventDuration
+                status: 'Pending'
+            };
+
+            try {
+                const res = await fetch('/api/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    bookingModal.hide();
+                    new bootstrap.Modal(document.getElementById('successModal')).show();
+                    e.target.reset();
+                } else {
+                    alert('Booking failed: ' + result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('An error occurred.');
+            }
+        }
+
+        // Clerk Init
+        window.addEventListener('load', async function () {
+            // Load dynamic content first
+            await loadDynamicContent();
+
+            if (window.Clerk) {
+                await window.Clerk.load({
+                    appearance: {
+                        baseTheme: 'dark',
+                        variables: {
+                            colorPrimary: '#fcdc3b',
+                            colorBackground: '#0f0f0f',
+                            colorText: 'white',
+                            borderRadius: '12px',
+                            fontFamily: "'Outfit', sans-serif"
+                        }
+                    }
+                });
+
+                if (Clerk.user) {
+                    Clerk.mountUserButton(document.getElementById('user-button'));
+                } else {
+                    const userButton = document.getElementById('user-button');
+                    userButton.innerHTML = '<button class="btn-primary-glow" onclick="Clerk.openSignIn()">Sign In</button>';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,488 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | OM Service</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Clerk Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"
+        data-clerk-publishable-key="pk_test_ZXZvbHZlZC1ib2EtMS5jbGVyay5hY2NvdW50cy5kZXYk" crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+    <!-- Ultimate Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="index.html">
+                <img src="logo-removebg-preview.png" alt="OM Service Logo">
+            </a>
+
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ultimateNav">
+                <span class="bi bi-list"></span>
+            </button>
+
+            <!-- Menu -->
+            <div class="collapse navbar-collapse" id="ultimateNav">
+                <!-- Centered Nav Group -->
+                <div class="nav-menu-group mx-auto">
+                    <a class="nav-link home-btn" href="index.html">
+                        <i class="fas fa-home"></i> HOME
+                    </a>
+                    <a class="nav-link active" href="contact.html">
+                        <i class="fas fa-phone-alt"></i> CONTACT
+                    </a>
+                    <a class="nav-link" href="about.html">
+                        <i class="fas fa-info-circle"></i> ABOUT US
+                    </a>
+                    <a class="nav-link" href="reviews.html">
+                        <i class="fas fa-star"></i> REVIEWS
+                    </a>
+                    <a class="nav-link" href="index.html">
+                        <i class="fas fa-id-card"></i> VISITING CARD
+                    </a>
+                    <a class="nav-link" href="user-dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i> DASHBOARD
+                    </a>
+
+                </div>
+
+                <!-- Right Side -->
+                <div class="d-flex align-items-center gap-3">
+                    <div id="user-button"></div>
+                    <a href="join.html" class="join-us-btn">
+                        JOIN US
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5 mb-5 ps-3 pe-3">
+
+        <!-- Hero/Brand Section -->
+        <div class="text-center mt-5 mb-5">
+            <div class="glass-panel d-inline-block px-5 py-4">
+                <h1 class="page-title text-gold mb-3">OM SERVICES</h1>
+                <img src="logo-removebg-preview.png" alt="OM Services"
+                    style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid #fcdc3b; padding: 5px; background: rgba(255,255,255,0.05);">
+
+                <!-- Admin Portal Link -->
+                <div class="mt-3">
+                    <a href="#" onclick="showAdminPopup()" class="text-white-50 text-decoration-none small hover-gold">
+                        <i class="fas fa-lock me-1"></i> Admin Portal
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center text-white-50 mb-5" style="font-size: 1.2rem;">We are here to help you. Reach out to us
+            anytime.</p>
+
+        <!-- Contact Section -->
+        <div class="row g-4 justify-content-center mb-5">
+            <div class="col-md-4">
+                <div class="glass-panel h-100 p-4 text-center hover-lift">
+                    <i class="fas fa-phone-alt text-gold fs-1 mb-3"></i>
+                    <h3 class="text-gold fw-bold mb-3">Phone</h3>
+                    <p class="text-white-50 mb-3">Speak to our team directly for immediate assistance.</p>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="tel:8870043071" class="text-white text-decoration-none fw-bold"><i
+                                class="fas fa-phone me-2"></i>+91 88700 43071</a>
+                        <small class="text-white-50">Lokesh</small>
+                        <a href="tel:8015427723" class="text-white text-decoration-none fw-bold"><i
+                                class="fas fa-phone me-2"></i>+91 80154 27723</a>
+                        <small class="text-white-50">Ajay</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="glass-panel h-100 p-4 text-center hover-lift">
+                    <i class="fas fa-envelope text-gold fs-1 mb-3"></i>
+                    <h3 class="text-gold fw-bold mb-3">Email</h3>
+                    <p class="text-white-50 mb-3">Send us your queries and we'll get back to you soon.</p>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="mailto:lokeshslgm2005@gmail.com"
+                            class="text-white text-decoration-none">lokeshslgm2005@gmail.com</a>
+                        <a href="mailto:ajay065599@gmail.com"
+                            class="text-white text-decoration-none">ajay065599@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="glass-panel h-100 p-4 text-center hover-lift">
+                    <i class="fas fa-map-marker-alt text-gold fs-1 mb-3"></i>
+                    <h3 class="text-gold fw-bold mb-3">Location</h3>
+                    <p class="text-white-50 mb-3">Visit our office to discuss your plans.</p>
+                    <a href="https://maps.google.com/?q=Raja+Street,Laligam,Dharmapuri" target="_blank"
+                        class="text-white text-decoration-none">
+                        Raja Street,<br>Laligam, Dharmapuri,<br>Tamil Nadu 636804
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Values Section -->
+        <div class="glass-panel p-5 mb-5">
+            <h2 class="text-center text-white fw-bold mb-4">Our Commitment</h2>
+            <div class="row g-4 text-center">
+                <div class="col-md-6 border-end border-white border-opacity-10">
+                    <i class="fas fa-shield-alt text-gold fs-2 mb-3"></i>
+                    <h4 class="text-white">Safe & Secure</h4>
+                    <p class="text-white-50">We build our websites with robust security protocols to protect your data
+                        and privacy.</p>
+                </div>
+                <div class="col-md-6">
+                    <i class="fas fa-users text-gold fs-2 mb-3"></i>
+                    <h4 class="text-white">Loyal Team</h4>
+                    <p class="text-white-50">Our team is helpful, loyal, and disciplined, dedicated to providing quality
+                        service.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="text-center">
+            <h3 class="text-white fw-bold mb-4">Follow Us</h3>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="https://www.instagram.com/omservices2025?igsh=MXZwc3p1ODJ1ZW5ucg==" target="_blank"
+                    class="btn-secondary-glow rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 60px; height: 60px;"><i class="fab fa-instagram fs-3"></i></a>
+                <a href="https://wa.me/8870043071" target="_blank"
+                    class="btn-secondary-glow rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 60px; height: 60px;"><i class="fab fa-whatsapp fs-3"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Login Popup (Minimal for Admin) -->
+    <div id="loginPopup"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:#140317; padding:40px; border-radius:15px; border:1px solid #fcdc3b; text-align:center;">
+            <h3 class="text-white mb-4">Admin Login</h3>
+            <form onsubmit="handleAdminLogin(event)">
+                <input type="text" id="adminUser" placeholder="Username" class="form-control mb-3" required>
+                <input type="password" id="adminPass" placeholder="Password" class="form-control mb-3" required>
+                <button type="submit" class="btn btn-warning w-100 fw-bold">Login</button>
+            </form>
+            <button onclick="document.getElementById('loginPopup').style.display='none'"
+                class="btn btn-link text-white mt-3">Close</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function showAdminPopup() {
+            document.getElementById('loginPopup').style.display = 'flex';
+        }
+
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('adminUser').value;
+            const p = document.getElementById('adminPass').value;
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    localStorage.setItem('isAdmin', 'true');
+                    window.location.href = 'admin.html';
+                } else {
+                    alert('Invalid credentials');
+                }
+            } catch (err) { console.error(err); alert('Error'); }
+        }
+
+        // Clerk Init
+        window.addEventListener('load', async function () {
+            if (window.Clerk) {
+                await window.Clerk.load({
+                    appearance: {
+                        baseTheme: 'dark',
+                        variables: {
+                            colorPrimary: '#fcdc3b',
+                            borderRadius: '12px',
+                            fontFamily: "'Outfit', sans-serif"
+                        }
+                    },
+                    localization: {
+                        userButton: {
+                            action: {
+                                manageAccount: "Edit",
+                                signOut: "Sign Out"
+                            }
+                        }
+                    }
+                });
+
+                if (Clerk.user) {
+                    Clerk.mountUserButton(document.getElementById('user-button'));
+                } else {
+                    const userButton = document.getElementById('user-button');
+                    // Premium Button style
+                    userButton.innerHTML = `
+                        <button onclick="Clerk.openSignIn()" class="btn" style="
+                            padding: 6px 20px;
+                            background-color: transparent;
+                            color: #fcdc3b;
+                            border: 2px solid #fcdc3b;
+                            border-radius: 30px;
+                            font-size: 1rem;
+                            font-weight: bold;
+                            letter-spacing: 1px;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                        ">Sign In</button>
+                    `;
+                }
+            }
+        });
+    </script>
+</body>
+
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Contact & About</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(113deg, #501F56, #19021C);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 24px;
+            background: linear-gradient(135deg, #501F56, #19021C);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+            position: relative;
+            z-index: 99;
+        }
+
+        .logo img {
+            height: 48px;
+            width: 48px;
+            object-fit: cover;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 26px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        nav ul li {
+            position: relative;
+            cursor: pointer;
+            font-weight: 900;
+            padding: 6px 10px;
+            font-size: 1rem;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 17px;
+            display: inline-block;
+        }
+
+        nav ul li::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 20%;
+            bottom: 2px;
+            width: 60%;
+            height: 3px;
+            background: #fcdc3b;
+            border-radius: 2px;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        nav ul li:hover {
+            color: #fcdc3b;
+            background: rgba(252, 220, 59, 0.08);
+        }
+
+        nav ul li:hover::after {
+            transform: scaleX(1);
+        }
+
+        .joi {
+            padding: 6px 20px;
+            background-color: gold;
+            color: black;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 4px;
+            box-shadow: 0 4px 18px #fcdc3b59;
+            letter-spacing: 1px;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 60px auto;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .contact-container h2 {
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fcdc3b;
+            font-size: 2.5rem;
+        }
+
+        .contact-container h3 {
+            font-weight: 700;
+            color: #fcdc3b;
+            border-bottom: 2px solid rgba(252, 220, 59, 0.3);
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .contact-container p,
+        .contact-container .detail-item {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item i {
+            font-size: 1.5rem;
+            color: #fcdc3b;
+            width: 30px;
+            text-align: center;
+        }
+
+        .detail-item strong {
+            color: #fff;
+        }
+
+        .detail-item a {
+            color: #fcdc3b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .detail-item a:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <img src="logo.png" alt="Logo" />
+        </div>
+        <ul>
+            <li onclick="navigateTo('index.html')">Home</li>
+            <li onclick="navigateTo('about.html')">About</li>
+            <li onclick="navigateTo('contact.html')">Contact</li>
+            <li onclick="navigateTo('review.html')">Review</li>
+            <li onclick="navigateTo('join.html')"><span class="joi">Join Us</span></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <div class="contact-container">
+            <h2>Contact & About This Application</h2>
+
+            <h3><i class="fas fa-info-circle"></i> About the App</h3>
+            <p>
+                This is a comprehensive booking management application built entirely with client-side technologies
+                (HTML, CSS, and JavaScript). It features separate admin panels for creating and managing events—such as
+                catering, travel, or photography packages—and beautiful, client-facing pages for users to view and book
+                these services. All data, from event details to customer bookings and reviews, is persistently stored in
+                the browser's local storage, creating a seamless, database-like experience without requiring a backend
+                server.
+            </p>
+
+            <h3><i class="fas fa-user-tie"></i> Project Credits</h3>
+            <div class="detail-item">
+                <i class="fas fa-user-crown"></i>
+                <div>
+                    <strong>Owner:</strong>
+                    <span>[Your Name]</span>
+                </div>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-drafting-compass"></i>
+                <div>
+                    <strong>UI/UX & Development:</strong>
+                    <span>Tamilanbu T</span>
+                </div>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <strong>Contact Email:</strong>
+                    <a href="mailto:tamilanbu423@gmail.com">tamilanbu423@gmail.com</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+>>>>>>> c7f865d88ceb3a1b4fbd6c0ccd4e30d14dbeff4e
+</html>

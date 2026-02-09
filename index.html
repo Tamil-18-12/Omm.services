@@ -1,0 +1,1249 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OM Service</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Clerk Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"
+        data-clerk-publishable-key="pk_test_ZXZvbHZlZC1ib2EtMS5jbGVyay5hY2NvdW50cy5kZXYk" crossorigin="anonymous">
+        </script>
+    <style>
+        /* PREMIUM LOGIN MODAL STYLES */
+        #loginPopup {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #loginPopup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content.glass-login {
+            background: rgba(25, 2, 28, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(252, 220, 59, 0.2);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(252, 220, 59, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #loginPopup.active .popup-content.glass-login {
+            transform: scale(1);
+        }
+
+        .login-header {
+            text-align: center;
+        }
+
+        .login-icon-circle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(252, 220, 59, 0.2), rgba(0, 0, 0, 0));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border: 1px solid rgba(252, 220, 59, 0.3);
+            box-shadow: 0 0 15px rgba(252, 220, 59, 0.1);
+        }
+
+        .login-icon-circle i {
+            font-size: 1.8rem;
+            color: #fcdc3b;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #fcdc3b;
+            transform: rotate(90deg);
+        }
+
+        .input-group-custom {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fcdc3b;
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
+        .form-control-glass {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 15px 12px 45px;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control-glass:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #fcdc3b;
+            outline: none;
+            box-shadow: 0 0 10px rgba(252, 220, 59, 0.2);
+        }
+
+        .form-control-glass::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-login-glow {
+            background: #fcdc3b;
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(252, 220, 59, 0.3);
+        }
+
+        .btn-login-glow:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(252, 220, 59, 0.5);
+        }
+
+        .text-gold {
+            color: #fcdc3b !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Ultimate Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="index.html">
+                <img src="logo-removebg-preview.png" alt="OM Service Logo">
+            </a>
+
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ultimateNav">
+                <span class="bi bi-list"></span>
+            </button>
+
+            <!-- Menu -->
+            <div class="collapse navbar-collapse justify-content-between" id="ultimateNav">
+                <!-- Centered Nav Group - Removed mx-auto to close gap, added ms-auto/me-4 if needed for center alignment but user wants less space -->
+                <div class="nav-menu-group mx-auto">
+                    <!-- Keep mx-auto for center, but container-fluid with limited width helps. 
+                        User wants to "remove unwanted space". The gap between menu and right side is large. 
+                        Using justify-content: center on collapse or gap might be better if we remove the spreading.
+                        Let's try: Removing mx-auto and using regular flow with gaps? 
+                        The screenshot shows huge gap. 
+                        Let's try standard spacing. -->
+                    <a class="nav-link home-btn active" href="index.html">
+                        <i class="fas fa-home"></i> HOME
+                    </a>
+                    <a class="nav-link" href="contact.html">
+                        <i class="fas fa-phone-alt"></i> CONTACT
+                    </a>
+                    <a class="nav-link" href="about.html">
+                        <i class="fas fa-info-circle"></i> ABOUT US
+                    </a>
+                    <a class="nav-link" href="reviews.html">
+                        <i class="fas fa-star"></i> REVIEWS
+                    </a>
+                    <a class="nav-link" href="#" onclick="showCardPopup(); return false;">
+                        <i class="fas fa-id-card"></i> VISITING CARD
+                    </a>
+                    <a class="nav-link" href="user-dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i> DASHBOARD
+                    </a>
+
+                </div>
+
+                <!-- Right Side -->
+                <div class="d-flex align-items-center gap-3">
+                    <div id="user-button"></div>
+                    <a href="join.html" class="join-us-btn">
+                        JOIN US
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="main-section d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-7">
+                    <div class="content-box">
+                        <h1 class="font-cinzel display-1 fw-bold">OM</h1>
+                        <div class="subheading font-cinzel">SERVICE</div>
+                        <button class="btn-book" onclick="navigateTo('go.html')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section (Moved to First Position) -->
+    <section class="reviews-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="text-gold fw-bold display-5 font-cinzel">Customer Stories</h2>
+                <div style="height: 3px; width: 80px; background: #fcdc3b; margin: 15px auto;"></div>
+                <p class="text-white-50 fs-5 mt-3">What our clients say about us</p>
+            </div>
+
+            <div class="row g-4 justify-content-center" id="home-reviews-container">
+                <div class="col-12 text-center">
+                    <div class="spinner-border text-gold" role="status"></div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <button class="btn-book" onclick="navigateTo('reviews.html')">View All Reviews</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Preview Section (Moved to Second Position) -->
+    <section class="contact-preview-section py-5 position-relative">
+        <div class="container position-relative">
+            <div class="text-center mb-5">
+                <h2 class="text-gold fw-bold display-5 font-cinzel">Get In Touch</h2>
+                <div style="height: 3px; width: 80px; background: #fcdc3b; margin: 15px auto;"></div>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4">
+                    <div class="glass-panel h-100 p-5 text-center hover-lift border-gold-glow">
+                        <div class="mb-4 mx-auto">
+                            <i class="fas fa-phone-alt text-gold fs-3"></i>
+                        </div>
+                        <h3 class="text-white fw-bold mb-3 font-cinzel">Phone</h3>
+                        <p class="text-white-50 mb-4">Direct line to our team.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="tel:8870043071" class="text-gold text-decoration-none fw-bold fs-5">+91 88700
+                                43071</a>
+                            <a href="tel:8015427723" class="text-white text-decoration-none fw-bold">+91 80154 27723</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-panel h-100 p-5 text-center hover-lift border-gold-glow">
+                        <div class="mb-4 mx-auto">
+                            <i class="fas fa-envelope text-gold fs-3"></i>
+                        </div>
+                        <h3 class="text-white fw-bold mb-3 font-cinzel">Email</h3>
+                        <p class="text-white-50 mb-4">Send us your detailed queries.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="mailto:lokeshslgm2005@gmail.com"
+                                class="text-white text-decoration-none small">lokeshslgm2005@gmail.com</a>
+                            <a href="mailto:ajay065599@gmail.com"
+                                class="text-white text-decoration-none small">ajay065599@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-panel h-100 p-5 text-center hover-lift border-gold-glow">
+                        <div class="mb-4 mx-auto">
+                            <i class="fas fa-map-marker-alt text-gold fs-3"></i>
+                        </div>
+                        <h3 class="text-white fw-bold mb-3 font-cinzel">Location</h3>
+                        <p class="text-white-50 mb-4">Visit our main office.</p>
+                        <a href="https://maps.google.com/?q=Raja+Street,Laligam,Dharmapuri" target="_blank"
+                            class="text-white text-decoration-none">
+                            Raja Street, Laligam,<br>Dharmapuri, Tamil Nadu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About/Services Preview Section (Third) -->
+    <section class="about-preview-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="text-gold fw-bold display-5 font-cinzel">Our Premium Services</h2>
+                <div style="height: 3px; width: 80px; background: #fcdc3b; margin: 15px auto;"></div>
+                <p class="text-white-50">Comprehensive wedding and event solutions</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-panel h-100 p-4 text-center hover-scale service-card-mini">
+                        <i class="fas fa-utensils text-gold fs-1 mb-4"></i>
+                        <h4 class="text-white fw-bold font-cinzel">Catering</h4>
+                        <p class="text-white-50 small">Authentic & Modern</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-panel h-100 p-4 text-center hover-scale service-card-mini">
+                        <i class="fas fa-bus-alt text-gold fs-1 mb-4"></i>
+                        <h4 class="text-white fw-bold font-cinzel">Travels</h4>
+                        <p class="text-white-50 small">Luxury Transport</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-panel h-100 p-4 text-center hover-scale service-card-mini">
+                        <i class="fas fa-camera text-gold fs-1 mb-4"></i>
+                        <h4 class="text-white fw-bold font-cinzel">Photography</h4>
+                        <p class="text-white-50 small">Cinematic Memories</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-panel h-100 p-4 text-center hover-scale service-card-mini">
+                        <i class="fas fa-ice-cream text-gold fs-1 mb-4"></i>
+                        <h4 class="text-white fw-bold font-cinzel">Sweet Stalls</h4>
+                        <p class="text-white-50 small">Delightful Treats</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <button class="btn-book" onclick="navigateTo('about.html')">Explore All Services</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Popup (Premium Design) -->
+    <div id="loginPopup">
+        <div class="popup-content glass-login" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+            <span class="close-btn" aria-label="Close login popup" role="button" tabindex="0"
+                onclick="hideLoginPopup()">
+                <i class="fas fa-times"></i>
+            </span>
+
+            <div class="login-header mb-4">
+                <div class="login-icon-circle">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h2 id="loginTitle" class="text-gold mt-3">Admin Portal</h2>
+                <p class="text-white-50 small">Secure Access Only</p>
+            </div>
+
+            <form id="loginForm" onsubmit="return validateLogin(event)">
+                <div class="input-group-custom mb-4">
+                    <span class="input-icon"><i class="fas fa-user-astronaut"></i></span>
+                    <input type="text" class="form-control-glass" id="userId" name="userId" placeholder="Admin ID"
+                        required autocomplete="off" />
+                </div>
+
+                <div class="input-group-custom mb-4">
+                    <span class="input-icon"><i class="fas fa-lock"></i></span>
+                    <input type="password" class="form-control-glass" id="password" name="password"
+                        placeholder="Password" required autocomplete="off" />
+                </div>
+
+                <button type="submit" class="btn-login-glow w-100">
+                    <span class="btn-text">Unlock Dashboard</span>
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+
+                <div class="error-msg mt-3 text-center small" id="loginError"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Card Popup -->
+    <div id="cardPopup">
+        <div class="popup-content" role="dialog" aria-modal="true" aria-labelledby="cardTitle">
+            <span class="close-btn" aria-label="Close visiting card popup" role="button" tabindex="0"
+                onclick="hideCardPopup()">&times;</span>
+            <h2 id="cardTitle">Visiting Card</h2>
+            <div class="card-images row g-3 mb-4">
+                <div class="col-6">
+                    <img src="1.png" alt="Front of the visiting card" onclick="openImageViewer(this.src)">
+                </div>
+                <div class="col-6">
+                    <img src="2.png" alt="Back of the visiting card" onclick="openImageViewer(this.src)">
+                </div>
+            </div>
+            <a href="visiting-card.zip" download class="btn-download">Download</a>
+        </div>
+    </div>
+
+    <!-- Image Viewer -->
+    <div id="imageViewer">
+        <span class="close-viewer-btn" onclick="closeImageViewer()">&times;</span>
+        <img id="fullScreenImage" src="" alt="Full-screen view">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        function showLoginPopup() {
+            document.getElementById('loginPopup').classList.add('active');
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('loginForm').reset();
+            document.getElementById('userId').focus();
+        }
+
+        function hideLoginPopup() {
+            document.getElementById('loginPopup').classList.remove('active');
+        }
+
+        async function validateLogin(event) {
+            event.preventDefault();
+            const userIdInput = document.getElementById('userId');
+            const passwordInput = document.getElementById('password');
+            const errorMsg = document.getElementById('loginError');
+            const btn = document.querySelector('.btn-login-glow');
+            const originalBtnText = btn.innerHTML;
+
+            // Simple client-side check before API
+            if (!userIdInput.value || !passwordInput.value) {
+                errorMsg.style.color = "#ff4c4c";
+                errorMsg.textContent = "Please fill in all fields.";
+                return false;
+            }
+
+            // Loading State
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+            btn.disabled = true;
+            errorMsg.textContent = '';
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: userIdInput.value.trim(),
+                        password: passwordInput.value.trim()
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    errorMsg.style.color = "#4BB543"; // Success Green
+                    errorMsg.innerHTML = '<i class="fas fa-check-circle me-1"></i> Access Granted. Redirecting...';
+
+                    // Set Auth
+                    localStorage.setItem('isAdmin', 'true');
+
+                    setTimeout(() => {
+                        window.location.href = "admin.html";
+                    }, 800);
+                } else {
+                    errorMsg.style.color = "#ff4c4c"; // Error Red
+                    errorMsg.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Invalid Credentials';
+
+                    // Shake animation effect
+                    const popup = document.querySelector('.popup-content');
+                    popup.style.transform = "translateX(10px)";
+                    setTimeout(() => popup.style.transform = "translateX(-10px)", 100);
+                    setTimeout(() => popup.style.transform = "translateX(0)", 200);
+                }
+            } catch (err) {
+                console.error(err);
+                errorMsg.style.color = "#ff4c4c";
+                errorMsg.textContent = "Server connection error.";
+            } finally {
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
+            }
+            return false;
+        }
+
+        function showCardPopup() {
+            document.getElementById('cardPopup').classList.add('active');
+        }
+
+        function hideCardPopup() {
+            document.getElementById('cardPopup').classList.remove('active');
+        }
+
+        const imageViewer = document.getElementById('imageViewer');
+        const fullScreenImage = document.getElementById('fullScreenImage');
+
+        function openImageViewer(src) {
+            fullScreenImage.src = src;
+            imageViewer.classList.add('active');
+        }
+
+        function closeImageViewer() {
+            imageViewer.classList.remove('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                if (document.getElementById('loginPopup').classList.contains('active')) {
+                    hideLoginPopup();
+                }
+                if (document.getElementById('cardPopup').classList.contains('active')) {
+                    hideCardPopup();
+                }
+                if (imageViewer.classList.contains('active')) {
+                    closeImageViewer();
+                }
+            }
+        });
+
+        document.querySelector('#loginPopup .close-btn').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                hideLoginPopup();
+            }
+        });
+
+        document.querySelector('#cardPopup .close-btn').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                hideCardPopup();
+            }
+        });
+
+        document.querySelector('.close-viewer-btn').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                closeImageViewer();
+            }
+        });
+
+        // Clerk Initialization
+        window.addEventListener('load', async function () {
+            if (window.Clerk) {
+                try {
+                    await window.Clerk.load({
+                        appearance: {
+                            baseTheme: 'dark',
+                            variables: {
+                                colorPrimary: '#fcdc3b',
+                                borderRadius: '12px'
+                            }
+                        }
+                    });
+
+                    const userButtonDiv = document.getElementById('user-button');
+
+                    if (window.Clerk.user) {
+                        // User is signed in
+                        if (userButtonDiv) {
+                            window.Clerk.mountUserButton(userButtonDiv);
+                        }
+                    } else {
+                        // User is signed out
+                        if (userButtonDiv) {
+                            userButtonDiv.innerHTML = `
+                                <button id="sign-in-btn" class="join-us-btn" style="background: transparent; border: 2px solid #fcdc3b; margin-right: 10px;">
+                                    SIGN IN
+                                </button>
+                            `;
+                            document.getElementById('sign-in-btn').addEventListener('click', () => {
+                                window.Clerk.openSignIn();
+                            });
+                        }
+                    }
+                } catch (err) {
+                    console.error("Clerk failed to load:", err);
+                }
+            }
+            loadHomeReviews();
+        });
+
+        function accessDashboard() {
+            if (window.Clerk && window.Clerk.user) {
+                window.location.href = 'user-dashboard.html';
+            } else {
+                if (window.Clerk) {
+                    window.Clerk.openSignIn();
+                } else {
+                    window.location.href = 'user-dashboard.html';
+                }
+            }
+        }
+
+        async function loadHomeReviews() {
+            try {
+                const res = await fetch('/api/reviews');
+                const reviews = await res.json();
+                const container = document.getElementById('home-reviews-container');
+
+                if (reviews.length === 0) {
+                    container.innerHTML = '<p class="text-white-50 text-center">No reviews yet.</p>';
+                    return;
+                }
+
+                // Show top 3 reviews
+                container.innerHTML = reviews.slice(0, 3).map(r => `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-panel h-100 p-4" style="background: rgba(255,255,255,0.05); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="text-gold fw-bold mb-1" style="color: #fcdc3b;">${r.name}</h5>
+                                    <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">${r.serviceType}</span>
+                                </div>
+                                <div style="color: #fcdc3b;">
+                                    ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}
+                                </div>
+                            </div>
+                            <p class="text-white-50 fst-italic mb-3">"${r.comment}"</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+                document.getElementById('home-reviews-container').innerHTML = '';
+            }
+        }
+    </script>
+</body>
+
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OM Service</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <style>
+        /* Your original styles are preserved, with minor tweaks for Bootstrap compatibility */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: linear-gradient(113deg, #501F56, #19021C);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Custom Navbar Styles to override Bootstrap --- */
+        nav.navbar {
+            padding: 15px 24px;
+            background: linear-gradient(135deg, #501F56, #19021C);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+            z-index: 99;
+        }
+
+        .navbar-brand img {
+            height: 54px;
+            width: 55px;
+            object-fit: cover;
+        }
+
+        /* Style for the Bootstrap hamburger icon */
+        .navbar-toggler {
+            border: 2px solid #fcdc3b;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28252, 220, 59, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* Mobile menu background */
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background: linear-gradient(135deg, #501F56 60%, #19021C);
+                border-radius: 0 0 16px 16px;
+                box-shadow: 0 8px 22px rgba(80, 31, 86, 0.2);
+                margin-top: 10px;
+                padding: 10px;
+            }
+
+            .navbar-nav .nav-item {
+                text-align: center;
+            }
+        }
+
+
+        .navbar-nav .nav-link {
+            position: relative;
+            cursor: pointer;
+            font-weight: 900;
+            padding: 6px 10px !important;
+            /* Use !important to override Bootstrap */
+            font-size: 1rem;
+            color: white;
+            transition: color .3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 17px;
+            display: inline-block;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 20%;
+            bottom: 2px;
+            width: 60%;
+            height: 3px;
+            background: #fcdc3b;
+            border-radius: 2px;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #fcdc3b;
+            background: rgba(252, 220, 59, 0.08);
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .joi {
+            padding: 6px 20px;
+            background-color: gold;
+            color: black;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: inline-block;
+            box-shadow: 0 4px 18px #fcdc3b59;
+            letter-spacing: 1px;
+        }
+
+        .nav-item .joi {
+            margin-top: 0;
+        }
+
+        @media (min-width: 992px) {
+            .nav-item:not(:last-child) {
+                margin-right: 26px;
+            }
+        }
+
+        .main-section {
+            flex-grow: 1;
+        }
+
+        .content-box {
+            background: linear-gradient(135deg, #9926a8, #37023e);
+            border-radius: 20px;
+            padding: 56px 22px;
+            box-shadow: 0 6px 32px rgba(0, 0, 0, 0.22);
+            text-align: center;
+            color: white;
+            animation: fadein .9s;
+            width: 100%;
+            /* Let the Bootstrap column control the width */
+        }
+
+        @keyframes fadein {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-box h1 {
+            font-size: 4.6rem;
+            font-weight: 900;
+            text-shadow: 0 0 22px #fcdc3b, 0 2px 8px #380c42;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 11px;
+        }
+
+        .content-box .subheading {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+            color: #fcdc3b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 6px #531f62;
+        }
+
+        .btn-book {
+            background-color: #fcdc3b;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 50px;
+            font-weight: 900;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px 0 rgb(255 206 59 / 60%);
+            transition: background.3s, color .3s;
+            color: black;
+        }
+
+        .btn-book:hover {
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+        }
+
+        /* --- Popup styles --- */
+        #loginPopup,
+        #cardPopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(25, 2, 28, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            font-family: 'Arial Black', Arial, sans-serif;
+        }
+
+        #loginPopup.active,
+        #cardPopup.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #loginPopup .popup-content,
+        #cardPopup .popup-content {
+            background: linear-gradient(135deg, #501F56, #19021C);
+            border-radius: 20px;
+            padding: 30px 40px;
+            box-shadow: 0 8px 20px rgba(255, 252, 59, 0.8);
+            text-align: center;
+            position: relative;
+            color: #fcdc3b;
+        }
+
+        #loginPopup .popup-content {
+            width: 90vw;
+            max-width: 380px;
+        }
+
+        #cardPopup .popup-content {
+            width: 90vw;
+            max-width: 450px;
+        }
+
+        #loginPopup .popup-content h2,
+        #cardPopup .popup-content h2 {
+            margin-bottom: 18px;
+            font-size: 2.4rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 12px #fcdc3b, 0 2px 6px #380c42;
+        }
+
+        /* --- Custom Form Styles --- */
+        #loginPopup .form-label {
+            display: block;
+            text-align: left;
+            margin: 12px 0 6px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #fcdc3b;
+            text-shadow: 0 0 8px #531f62;
+        }
+
+        #loginPopup .form-control {
+            padding: 10px 12px;
+            border: 2px solid #fcdc3b;
+            border-radius: 12px;
+            background-color: #37023e;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #loginPopup .form-control:focus {
+            border-color: #fcdc3b;
+            box-shadow: 0 0 10px #fcdc3b;
+            background-color: #37023e;
+            /* Keep background color on focus */
+            color: white;
+        }
+
+        #loginPopup .popup-content .btn-login {
+            margin-top: 22px;
+            background-color: #fcdc3b;
+            color: black;
+            padding: 14px 36px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px #fcdc3b99;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #loginPopup .popup-content .btn-login:hover {
+            background-color: white;
+            color: #501F56;
+        }
+
+        /* --- Close buttons --- */
+        #loginPopup .popup-content .close-btn,
+        #cardPopup .popup-content .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #fcdc3b;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        #loginPopup .popup-content .close-btn:hover,
+        #cardPopup .popup-content .close-btn:hover {
+            color: white;
+        }
+
+        #loginPopup .error-msg {
+            margin-top: 12px;
+            color: #ff4c4c;
+            font-weight: 700;
+            font-size: 1rem;
+            text-shadow: 0 0 6px #ff4c4c;
+            min-height: 24px;
+        }
+
+        .card-images img {
+            border-radius: 8px;
+            border: 2px solid #fcdc3b;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            width: 100%;
+            /* img-fluid equivalent */
+        }
+
+        .card-images img:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-download {
+            background-color: #fcdc3b;
+            color: black;
+            padding: 14px 36px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px #fcdc3b99;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-download:hover {
+            background-color: white;
+            color: #501F56;
+        }
+
+        /* --- Full-screen Image Viewer --- */
+        #imageViewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #imageViewer.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #imageViewer img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 0 30px rgba(252, 220, 59, 0.5);
+            border: 2px solid #fcdc3b;
+        }
+
+        .close-viewer-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3rem;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-viewer-btn:hover {
+            color: #fcdc3b;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" alt="Logo" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('index.html')">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('contact.html')">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('review.html')">Review</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showCardPopup()">Visiting Card</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showLoginPopup()"><span class="joi">Control</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('catering-book-cus.html')"><span class="joi">Join
+                                Us</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="main-section d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-7">
+                    <div class="content-box">
+                        <h1>OM</h1>
+                        <div class="subheading">SERVICE</div>
+                        <button class="btn-book" onclick="navigateTo('go.html')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="loginPopup">
+        <div class="popup-content" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+            <span class="close-btn" aria-label="Close login popup" role="button" tabindex="0"
+                onclick="hideLoginPopup()">&times;</span>
+            <h2 id="loginTitle">Login</h2>
+            <form id="loginForm" onsubmit="return validateLogin(event)">
+                <div class="mb-3">
+                    <label for="userId" class="form-label">User ID</label>
+                    <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID"
+                        required autocomplete="off" />
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                        placeholder="Enter Password" required autocomplete="off" />
+                </div>
+                <button type="submit" class="btn btn-login w-100">Submit</button>
+                <div class="error-msg" id="loginError"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="cardPopup">
+        <div class="popup-content" role="dialog" aria-modal="true" aria-labelledby="cardTitle">
+            <span class="close-btn" aria-label="Close visiting card popup" role="button" tabindex="0"
+                onclick="hideCardPopup()">&times;</span>
+            <h2 id="cardTitle">Visiting Card</h2>
+            <div class="card-images row g-3 mb-4">
+                <div class="col-6">
+                    <img src="1.png" alt="Front of the visiting card" onclick="openImageViewer(this.src)">
+                </div>
+                <div class="col-6">
+                    <img src="2.png" alt="Back of the visiting card" onclick="openImageViewer(this.src)">
+                </div>
+            </div>
+            <a href="visiting-card.zip" download class="btn-download">Download</a>
+        </div>
+    </div>
+
+    <div id="imageViewer">
+        <span class="close-viewer-btn" onclick="closeImageViewer()">&times;</span>
+        <img id="fullScreenImage" src="" alt="Full-screen view">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // NOTE: The custom responsive menu toggle script is no longer needed.
+        // Bootstrap's data-bs-toggle attributes handle it automatically.
+
+        // Navigation function
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // Show login popup
+        function showLoginPopup() {
+            document.getElementById('loginPopup').classList.add('active');
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('loginForm').reset();
+            document.getElementById('userId').focus();
+        }
+
+        // Hide login popup
+        function hideLoginPopup() {
+            document.getElementById('loginPopup').classList.remove('active');
+        }
+
+        // Validate login credentials
+        function validateLogin(event) {
+            event.preventDefault();
+            const userId = document.getElementById('userId').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMsg = document.getElementById('loginError');
+            const validUserId = "1";
+            const validPassword = "1";
+
+            if (userId === validUserId && password === validPassword) {
+                errorMsg.style.color = "#4BB543";
+                errorMsg.textContent = "Login successful! Redirecting...";
+                setTimeout(() => {
+                    hideLoginPopup();
+                    window.location.href = "control.html";
+                }, 1000);
+            } else {
+                errorMsg.style.color = "#ff4c4c";
+                errorMsg.textContent = "Invalid User ID or Password.";
+            }
+            return false;
+        }
+
+        // Show visiting card popup
+        function showCardPopup() {
+            document.getElementById('cardPopup').classList.add('active');
+        }
+
+        // Hide visiting card popup
+        function hideCardPopup() {
+            document.getElementById('cardPopup').classList.remove('active');
+        }
+
+        // --- NEW JAVASCRIPT FOR IMAGE VIEWER ---
+        const imageViewer = document.getElementById('imageViewer');
+        const fullScreenImage = document.getElementById('fullScreenImage');
+
+        function openImageViewer(src) {
+            fullScreenImage.src = src;
+            imageViewer.classList.add('active');
+        }
+
+        function closeImageViewer() {
+            imageViewer.classList.remove('active');
+        }
+
+        // UPDATED: Close popups with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                if (document.getElementById('loginPopup').classList.contains('active')) {
+                    hideLoginPopup();
+                }
+                if (document.getElementById('cardPopup').classList.contains('active')) {
+                    hideCardPopup();
+                }
+                if (imageViewer.classList.contains('active')) {
+                    closeImageViewer();
+                }
+            }
+        });
+
+        // Accessibility for close buttons
+        document.querySelector('#loginPopup .close-btn').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                hideLoginPopup();
+            }
+        });
+
+        document.querySelector('#cardPopup .close-btn').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                hideCardPopup();
+            }
+        });
+
+        document.querySelector('.close-viewer-btn').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                closeImageViewer();
+            }
+        });
+    </script>
+</body>
+
+>>>>>>> c7f865d88ceb3a1b4fbd6c0ccd4e30d14dbeff4e
+</html>

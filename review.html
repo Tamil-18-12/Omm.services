@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Reviews</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #501F56, #19021C);
+            color: white;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 24px;
+            background: linear-gradient(135deg, #501F56, #19021C);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+            position: relative;
+            z-index: 99;
+        }
+
+        .logo img {
+            height: 48px;
+            width: 48px;
+            object-fit: cover;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 26px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        nav ul li {
+            position: relative;
+            cursor: pointer;
+            font-weight: 900;
+            padding: 6px 10px;
+            font-size: 1rem;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 17px;
+            display: inline-block;
+        }
+
+        nav ul li::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 20%;
+            bottom: 2px;
+            width: 60%;
+            height: 3px;
+            background: #fcdc3b;
+            border-radius: 2px;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        nav ul li:hover {
+            color: #fcdc3b;
+            background: rgba(252, 220, 59, 0.08);
+        }
+
+        nav ul li:hover::after {
+            transform: scaleX(1);
+        }
+
+        .joi {
+            padding: 6px 20px;
+            background-color: gold;
+            color: black;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 4px;
+            box-shadow: 0 4px 18px #fcdc3b59;
+            letter-spacing: 1px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-weight: 800;
+            font-size: 3rem;
+            color: #fcdc3b;
+        }
+
+        .header-section p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-add-review {
+            background-color: #fcdc3b;
+            color: #3a1d59;
+            font-weight: 700;
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-review:hover {
+            background-color: #e0bf2e;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(252, 220, 59, 0.3);
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .review-card .review-img {
+            width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .review-card .review-text {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            flex-grow: 1;
+        }
+
+        .review-footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .star-rating .fa-star {
+            color: #6c757d;
+        }
+
+        .star-rating .fa-star.filled {
+            color: #fcdc3b;
+        }
+
+        .like-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .like-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .like-button.liked {
+            background-color: #fcdc3b;
+            color: #3a1d59;
+            border-color: #fcdc3b;
+            cursor: not-allowed;
+        }
+
+        /* Cancel Button */
+        .cancel-button {
+            background: transparent;
+            border: none;
+            color: #f66;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .cancel-button:hover {
+            color: #ff0000;
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            background: #3b173f;
+            border: 1px solid #fcdc3b;
+            color: white;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(252, 220, 59, 0.3);
+        }
+
+        .modal-title {
+            color: #fcdc3b;
+        }
+
+        .star-input .fa-star {
+            font-size: 1.8rem;
+            color: #6c757d;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .btn-clear {
+            background: transparent;
+            border: none;
+            color: #fcdc3b;
+            font-size: 1.2rem;
+            cursor: pointer;
+            float: right;
+            margin-bottom: 10px;
+        }
+
+        .btn-clear:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <img src="logo.png" alt="Logo" />
+        </div>
+        <ul>
+            <li onclick="navigateTo('index.html')">Home</li>
+            <li onclick="navigateTo('about.html')">About</li>
+            <li onclick="navigateTo('contact.html')">Contact</li>
+            <li onclick="navigateTo('review.html')">Review</li>
+            <li onclick="navigateTo('join.html')"><span class="joi">Join Us</span></li>
+        </ul>
+    </nav>
+
+    <main class="container py-5">
+        <div class="header-section">
+            <h1>What Our Customers Say</h1>
+            <p>Read genuine reviews from our community or share your own experience.</p>
+            <button class="btn-add-review" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                <i class="fas fa-plus-circle"></i> Leave a Review
+            </button>
+        </div>
+
+        <div id="reviewsContainer" class="row gy-4"></div>
+
+        <div id="noReviewsMessage" class="d-none text-center p-5">
+            <h3>No Reviews Yet</h3>
+            <p>Be the first to share your experience!</p>
+        </div>
+    </main>
+
+    <div class="modal fade" id="reviewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Write Your Review</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn-clear" id="clearReviewBtn"><i class="fas fa-times"></i>
+                        Clear</button>
+                    <form id="reviewForm">
+                        <div class="mb-3">
+                            <label for="reviewDescription" class="form-label">Your Experience</label>
+                            <textarea class="form-control" id="reviewDescription" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reviewImage" class="form-label">Upload a Photo (Optional)</label>
+                            <input type="file" class="form-control" id="reviewImage" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Your Rating</label>
+                            <div class="star-input" id="starRatingInput">
+                                <i class="fas fa-star" data-value="1"></i>
+                                <i class="fas fa-star" data-value="2"></i>
+                                <i class="fas fa-star" data-value="3"></i>
+                                <i class="fas fa-star" data-value="4"></i>
+                                <i class="fas fa-star" data-value="5"></i>
+                            </div>
+                            <input type="hidden" id="ratingValue" value="0" required>
+                        </div>
+                        <button type="submit" class="btn-add-review w-100">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reviewsContainer = document.getElementById('reviewsContainer');
+            const noReviewsMessage = document.getElementById('noReviewsMessage');
+            const reviewForm = document.getElementById('reviewForm');
+            const reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
+            const stars = document.querySelectorAll('.star-input .fa-star');
+            const clearReviewBtn = document.getElementById('clearReviewBtn');
+
+            let currentRating = 0;
+            let reviews = JSON.parse(localStorage.getItem('userReviews')) || [];
+            let likedReviews = JSON.parse(localStorage.getItem('likedReviews')) || [];
+
+            // --- Clear Button Logic ---
+            clearReviewBtn.addEventListener('click', () => {
+                reviewForm.reset();
+                currentRating = 0;
+                resetStars();
+                document.getElementById('ratingValue').value = 0;
+            });
+
+            // --- Star Rating Logic ---
+            stars.forEach(star => {
+                star.addEventListener('mouseover', function () {
+                    resetStars();
+                    const rating = parseInt(this.dataset.value);
+                    highlightStars(rating);
+                });
+                star.addEventListener('mouseout', resetStars);
+                star.addEventListener('click', function () {
+                    currentRating = parseInt(this.dataset.value);
+                    document.getElementById('ratingValue').value = currentRating;
+                    highlightStars(currentRating);
+                    stars.forEach(s => s.removeEventListener('mouseout', resetStars));
+                });
+            });
+
+            function highlightStars(rating) {
+                for (let i = 0; i < rating; i++) {
+                    stars[i].style.color = '#fcdc3b';
+                }
+            }
+
+            function resetStars() {
+                stars.forEach(star => star.style.color = '#6c757d');
+                if (currentRating > 0) {
+                    highlightStars(currentRating);
+                }
+            }
+
+            // --- Form Submission Logic ---
+            reviewForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                if (document.getElementById('ratingValue').value == '0') {
+                    alert('Please provide a star rating.');
+                    return;
+                }
+
+                const description = document.getElementById('reviewDescription').value;
+                const rating = currentRating;
+                const imageFile = document.getElementById('reviewImage').files[0];
+                let imageBase64 = null;
+
+                if (imageFile) {
+                    imageBase64 = await resizeAndConvertToBase64(imageFile, 800, 0.7);
+                }
+
+                const newReview = {
+                    id: Date.now().toString(),
+                    description: description,
+                    image: imageBase64,
+                    rating: rating,
+                    likes: 0,
+                    timestamp: new Date().toISOString()
+                };
+
+                reviews.unshift(newReview);
+                saveReviews();
+                renderReviews();
+
+                reviewModal.hide();
+                this.reset();
+                currentRating = 0;
+                resetStars();
+                stars.forEach(s => s.addEventListener('mouseout', resetStars));
+            });
+
+            // --- Like / Cancel Button Logic ---
+            reviewsContainer.addEventListener('click', function (e) {
+                // Like Button
+                const likeBtn = e.target.closest('.like-button');
+                if (likeBtn) {
+                    const reviewId = likeBtn.dataset.reviewId;
+                    if (!likedReviews.includes(reviewId)) {
+                        const reviewToLike = reviews.find(r => r.id === reviewId);
+                        if (reviewToLike) {
+                            reviewToLike.likes++;
+                            likedReviews.push(reviewId);
+                            saveReviews();
+                            saveLikedReviews();
+                            renderReviews();
+                        }
+                    }
+                    return;
+                }
+
+                // Cancel Button
+                const cancelBtn = e.target.closest('.cancel-button');
+                if (cancelBtn) {
+                    const reviewId = cancelBtn.dataset.reviewId;
+                    if (confirm("Are you sure you want to delete this review?")) {
+                        reviews = reviews.filter(r => r.id !== reviewId);
+                        likedReviews = likedReviews.filter(id => id !== reviewId);
+                        saveReviews();
+                        saveLikedReviews();
+                        renderReviews();
+                    }
+                }
+            });
+
+            // --- Render Logic ---
+            function renderReviews() {
+                reviewsContainer.innerHTML = '';
+                if (reviews.length === 0) {
+                    noReviewsMessage.classList.remove('d-none');
+                    return;
+                }
+                noReviewsMessage.classList.add('d-none');
+
+                reviews.forEach(review => {
+                    const isLiked = likedReviews.includes(review.id);
+                    const card = document.createElement('div');
+                    card.className = 'col-lg-4 col-md-6 d-flex';
+
+                    let imageHTML = review.image ? `<img src="${review.image}" alt="Review Image" class="review-img">` : '';
+                    let starsHTML = '';
+                    for (let i = 1; i <= 5; i++) {
+                        starsHTML += `<i class="fas fa-star ${i <= review.rating ? 'filled' : ''}"></i>`;
+                    }
+
+                    card.innerHTML = `
+                        <div class="review-card">
+                            ${imageHTML}
+                            <p class="review-text">"${review.description}"</p>
+                            <div class="review-footer">
+                                <div class="star-rating">${starsHTML}</div>
+                                <div>
+                                    <button class="like-button ${isLiked ? 'liked' : ''}" data-review-id="${review.id}">
+                                        <i class="fas fa-thumbs-up"></i> ${review.likes}
+                                    </button>
+                                    <button class="cancel-button" data-review-id="${review.id}">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    reviewsContainer.appendChild(card);
+                });
+            }
+
+            // --- Helper & Save Functions ---
+            function saveReviews() {
+                localStorage.setItem('userReviews', JSON.stringify(reviews));
+            }
+            function saveLikedReviews() {
+                localStorage.setItem('likedReviews', JSON.stringify(likedReviews));
+            }
+
+            function resizeAndConvertToBase64(file, maxWidth, quality) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.src = event.target.result;
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            resolve(canvas.toDataURL('image/jpeg', quality));
+                        };
+                        img.onerror = error => reject(error);
+                    };
+                    reader.onerror = error => reject(error);
+                });
+            }
+
+            // Initial Render
+            renderReviews();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | OM Service</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Clerk Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"
+        data-clerk-publishable-key="pk_test_ZXZvbHZlZC1ib2EtMS5jbGVyay5hY2NvdW50cy5kZXYk" crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo-removebg-preview.png" alt="OM Service Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Admin-Portal</a></li>
+                </ul>
+                <div class="navbar-nav ms-auto">
+                    <div id="user-button"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5 mb-5 ps-3 pe-3">
+
+        <!-- Hero/Brand Section -->
+        <div class="text-center mt-5 mb-5">
+            <div class="glass-panel d-inline-block px-5 py-4">
+                <h1 class="page-title text-gold mb-3">OM SERVICES</h1>
+                <img src="logo-removebg-preview.png" alt="OM Services"
+                    style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid #fcdc3b; padding: 5px; background: rgba(255,255,255,0.05);">
+
+                <!-- Admin Portal Link (Re-added below logo for visibility if user wants) -->
+                <div class="mt-3">
+                    <button onclick="window.location.href='admin.html'"
+                        class="btn btn-sm btn-link text-white-50 text-decoration-none hover-gold border-0">
+                        <i class="fas fa-lock me-1"></i> Admin Login
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <section class="mb-5">
+            <h2
+                class="text-center text-white fw-bold mb-5 pb-2 border-bottom border-gold d-inline-block position-relative start-50 translate-middle-x">
+                Our Premium Services</h2>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-6">
+                    <div class="glass-panel h-100 p-4 hover-lift">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-utensils text-gold fs-1"></i>
+                        </div>
+                        <h4 class="text-center text-gold fw-bold mb-3">Catering Services</h4>
+                        <p class="text-white-50 text-center mb-3">Exceptional culinary experiences tailored to your
+                            taste.</p>
+                        <ul class="list-unstyled text-white-50">
+                            <li class="mb-2"><i class="fas fa-check text-gold me-2"></i>Traditional Banana Leaf</li>
+                            <li class="mb-2"><i class="fas fa-check text-gold me-2"></i>Modern Buffet Spread</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-6">
+                    <div class="glass-panel h-100 p-4 hover-lift">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-bus-alt text-gold fs-1"></i>
+                        </div>
+                        <h4 class="text-center text-gold fw-bold mb-3">Travel & Transport</h4>
+                        <p class="text-white-50 text-center mb-3">Reliable transportation for your guests.</p>
+                        <ul class="list-unstyled text-white-50">
+                            <li class="mb-2"><i class="fas fa-check text-gold me-2"></i>Luxury Buses & Vans</li>
+                            <li class="mb-2"><i class="fas fa-check text-gold me-2"></i>Premium Cars for Couples</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-6">
+                    <div class="glass-panel h-100 p-4 hover-lift">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-camera text-gold fs-1"></i>
+                        </div>
+                        <h4 class="text-center text-gold fw-bold mb-3">Photography</h4>
+                        <p class="text-white-50 text-center mb-3">Capturing precious moments with creativity.</p>
+                        <ul class="list-unstyled text-white-50">
+                            <li class="mb-2"><i class="fas fa-check text-gold me-2"></i>Candid & Traditional Photo
+                            </li>
+                            <li class="mb-2"><i class="fas fa-check text-gold me-2"></i>Cinematic Videography & Drone
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-6">
+                    <div class="glass-panel h-100 p-4 hover-lift">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-ice-cream text-gold fs-1"></i>
+                        </div>
+                        <h4 class="text-center text-gold fw-bold mb-3">Sweet Stalls</h4>
+                        <p class="text-white-50 text-center mb-3">A delicious addition to your celebration.</p>
+                        <ul class="list-unstyled text-white-50">
+                            <li class="mb-2"><i class="fas fa-check text-gold me-2"></i>Ice Cream & Popcorn</li>
+                            <li class="mb-2"><i class="fas fa-check text-gold me-2"></i>Pani Puri & Traditional
+                                Sweets</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Developer Section -->
+        <section class="glass-panel p-5 mt-5">
+            <h2 class="text-center text-white fw-bold mb-5">Meet the Creator</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-center mb-4 mb-lg-0">
+                    <img src="tamil.jpg" alt="Tamilanbu T"
+                        class="img-fluid rounded-circle border border-3 border-gold shadow"
+                        style="width: 200px; height: 200px; object-fit: cover;">
+                    <h3 class="text-gold mt-3 fw-bold">Tamilanbu T</h3>
+                    <p class="text-white-50">Lead Developer & Designer</p>
+                    <div class="d-flex justify-content-center gap-3 mt-3">
+                        <a href="https://www.instagram.com/tamil_12_anbu?igsh=MWJiNjNzcXV1OGNjYw==" target="_blank"
+                            class="btn-secondary-glow rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/tamil-anbu-0ab010301" target="_blank"
+                            class="btn-secondary-glow rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://wa.me/9042195722" target="_blank"
+                            class="btn-secondary-glow rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-8 text-white">
+                    <h4 class="text-gold mb-3">About Me</h4>
+                    <p class="text-white-50">Hello! I am the lead developer and designer behind this project. With a
+                        passion for creating clean, functional, and beautiful web applications, I built this platform
+                        from the ground up. My goal is to provide seamless digital solutions that solve real-world
+                        problems.</p>
+
+                    <h4 class="text-gold mt-4 mb-3">Contact</h4>
+                    <ul class="list-unstyled text-white-50">
+                        <li class="mb-2"><i class="fas fa-phone me-2 text-gold"></i> +91 90421 95722</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2 text-gold"></i> tamilanbu423@gmail.com</li>
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2 text-gold"></i> Laligam, Dharmapuri,
+                            636804</li>
+                    </ul>
+
+                    <button class="btn-primary-glow mt-4" onclick="contactDeveloper()">
+                        <i class="fas fa-paper-plane me-2"></i> Get In Touch
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    </div>
+
+    <!-- Login Popup (Minimal for Admin) -->
+    <div id="loginPopup"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:#140317; padding:40px; border-radius:15px; border:1px solid #fcdc3b; text-align:center;">
+            <h3 class="text-white mb-4">Admin Login</h3>
+            <form onsubmit="handleAdminLogin(event)">
+                <input type="text" id="adminUser" placeholder="Username" class="form-control mb-3" required>
+                <input type="password" id="adminPass" placeholder="Password" class="form-control mb-3" required>
+                <button type="submit" class="btn btn-warning w-100 fw-bold">Login</button>
+            </form>
+            <button onclick="document.getElementById('loginPopup').style.display='none'"
+                class="btn btn-link text-white mt-3">Close</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function showAdminPopup(e) {
+            if (e) e.preventDefault();
+            document.getElementById('loginPopup').style.display = 'flex';
+        }
+
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('adminUser').value;
+            const p = document.getElementById('adminPass').value;
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    localStorage.setItem('isAdmin', 'true');
+                    window.location.href = 'admin.html';
+                } else {
+                    alert('Invalid credentials');
+                }
+            } catch (err) { console.error(err); alert('Error'); }
+        }
+
+        function contactDeveloper() {
+            alert('Thank you for your interest!\nYou can reach me at: +91 90421 95722');
+        }
+
+        // Clerk Init
+        window.addEventListener('load', async function () {
+            if (window.Clerk) {
+                await window.Clerk.load({
+                    appearance: {
+                        baseTheme: 'dark',
+                        variables: {
+                            colorPrimary: '#fcdc3b',
+                            borderRadius: '12px',
+                            fontFamily: "'Outfit', sans-serif"
+                        }
+                    },
+                    localization: {
+                        userButton: {
+                            action: {
+                                manageAccount: "Edit",
+                                signOut: "Sign Out"
+                            }
+                        }
+                    }
+                });
+
+                if (Clerk.user) {
+                    Clerk.mountUserButton(document.getElementById('user-button'));
+                } else {
+                    const userButton = document.getElementById('user-button');
+                    userButton.innerHTML = '<button class="btn-primary-glow" onclick="Clerk.openSignIn()">Sign In</button>';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

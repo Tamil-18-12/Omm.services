@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Stall Service | OM Service</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Clerk Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"
+        data-clerk-publishable-key="pk_test_ZXZvbHZlZC1ib2EtMS5jbGVyay5hY2NvdW50cy5kZXYk" crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo-removebg-preview.png" alt="OM Service Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="sweet-service.html">Sweets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="navbar-nav ms-auto">
+                    <div id="user-button"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5 mb-5 ps-3 pe-3">
+        <h1 class="hero-title text-center mb-5 mt-4">Sweet Delights</h1>
+
+        <!-- Slideshow (Dynamic) -->
+        <div class="slideshow-container mx-auto mb-5" style="max-width: 900px;">
+            <div class="slide active" style="background-image: url('laddu.png');"></div>
+            <div class="slide" style="background-image: url('ice.webp');"></div>
+            <div class="slide" style="background-image: url('beeda.jpg');"></div>
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="changeSlide(-1)"><i class="bi bi-chevron-left"></i></button>
+                <button class="slide-btn" onclick="changeSlide(1)"><i class="bi bi-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div class="row g-5 justify-content-center mt-4">
+
+            <div class="col-lg-10">
+                <div class="glass-panel p-0 d-flex flex-column flex-md-row overflow-hidden hover-lift"
+                    onclick="openBookingModal('Ladoo & Jalebi Box', '₹150.00 / KG')">
+                    <div class="col-md-5" style="min-height: 250px;">
+                        <img src="laddu.png" alt="Sweets" class="w-100 h-100" style="object-fit: cover;">
+                    </div>
+                    <div class="col-md-7 p-4 p-md-5 d-flex flex-column justify-content-center">
+                        <span class="badge bg-gold text-dark mb-2 align-self-start">Best Seller</span>
+                        <h2 class="text-gold fw-bold mb-3">Ladoo & Jalebi Box</h2>
+                        <p class="text-white-50 mb-3">A classic assortment of our finest motichoor ladoos and crispy,
+                            syrupy jalebis.</p>
+                        <h4 class="text-white mb-4">₹150.00 / KG</h4>
+                        <button class="btn-secondary-glow align-self-start"
+                            onclick="event.stopPropagation(); openBookingModal('Ladoo & Jalebi Box', '₹150.00 / KG')">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-10">
+                <div class="glass-panel p-0 d-flex flex-column flex-md-row overflow-hidden hover-lift"
+                    onclick="openBookingModal('Ice-Cream Stall', '₹200.00 / KG')">
+                    <div class="col-md-5" style="min-height: 250px;">
+                        <img src="ice.webp" alt="Ice Cream" class="w-100 h-100" style="object-fit: cover;">
+                    </div>
+                    <div class="col-md-7 p-4 p-md-5 d-flex flex-column justify-content-center">
+                        <span class="badge bg-gold text-dark mb-2 align-self-start">Cool Treats</span>
+                        <h2 class="text-gold fw-bold mb-3">Ice-Cream Stall</h2>
+                        <p class="text-white-50 mb-3">Make your day sweet with our premium ice creams. Taste that melts
+                            your heart!</p>
+                        <h4 class="text-white mb-4">₹200.00 / KG</h4>
+                        <button class="btn-secondary-glow align-self-start"
+                            onclick="event.stopPropagation(); openBookingModal('Ice-Cream Stall', '₹200.00 / KG')">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-10">
+                <div class="glass-panel p-0 d-flex flex-column flex-md-row overflow-hidden hover-lift"
+                    onclick="openBookingModal('Beeda Stall', '₹300.00 / Box')">
+                    <div class="col-md-5" style="min-height: 250px;">
+                        <img src="beeda.jpg" alt="Beeda" class="w-100 h-100" style="object-fit: cover;">
+                    </div>
+                    <div class="col-md-7 p-4 p-md-5 d-flex flex-column justify-content-center">
+                        <span class="badge bg-gold text-dark mb-2 align-self-start">Traditional</span>
+                        <h2 class="text-gold fw-bold mb-3">Beeda Stall</h2>
+                        <p class="text-white-50 mb-3">Finish your meal the royal way! Sweet Beeda, happy ending.</p>
+                        <h4 class="text-white mb-4">₹300.00 / Box</h4>
+                        <button class="btn-secondary-glow align-self-start"
+                            onclick="event.stopPropagation(); openBookingModal('Beeda Stall', '₹300.00 / Box')">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-10">
+                <div class="glass-panel p-0 d-flex flex-column flex-md-row overflow-hidden hover-lift"
+                    onclick="openBookingModal('Pani Puri Stall', '₹200.00 / Packet')">
+                    <div class="col-md-5" style="min-height: 250px;">
+                        <img src="paani.png" alt="Pani Puri" class="w-100 h-100" style="object-fit: cover;">
+                    </div>
+                    <div class="col-md-7 p-4 p-md-5 d-flex flex-column justify-content-center">
+                        <span class="badge bg-gold text-dark mb-2 align-self-start">Spicy & Tangy</span>
+                        <h2 class="text-gold fw-bold mb-3">Pani Puri Stall</h2>
+                        <p class="text-white-50 mb-3">Taste that pops! Spicy enough to make you fall in love.</p>
+                        <h4 class="text-white mb-4">₹200.00 / Packet</h4>
+                        <button class="btn-secondary-glow align-self-start"
+                            onclick="event.stopPropagation(); openBookingModal('Pani Puri Stall', '₹200.00 / Packet')">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Premium Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content premium-booking">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title" id="bookingTitle"><i class="fas fa-cookie-bite"></i> Place Order</h5>
+                        <p class="mb-0 text-white-50 small ms-4">Fill in the details to confirm your order</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 p-md-5">
+
+                    <!-- Context Banner -->
+                    <div class="context-banner">
+                        <i class="fas fa-star me-2"></i> <span id="displayItem">Select Item</span>
+                        <div class="small fw-normal opacity-75 mt-1" id="displayPrice"></div>
+                    </div>
+
+                    <!-- Hidden elements to preserve JS logic if it reads them textContent -->
+                    <!-- But referencing JS reads 'selectedItemName' textContent. So I must preserve IDs -->
+                    <span id="selectedItemName" style="display:none;"></span>
+                    <span id="selectedItemPrice" style="display:none;"></span>
+
+
+                    <form id="bookingForm" onsubmit="handleBooking(event)">
+
+                        <!-- Personal Info -->
+                        <div class="form-section-title">
+                            <i class="fas fa-user-circle"></i> Customer Details
+                        </div>
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" class="form-control-premium" id="name" required
+                                    placeholder="Enter full name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-phone"></i> Phone Number</label>
+                                <input type="tel" class="form-control-premium" id="phone" required
+                                    placeholder="Enter phone number">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-envelope"></i> Email Address</label>
+                                <input type="email" class="form-control-premium" id="email" required
+                                    placeholder="your@email.com">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-calendar-day"></i> Delivery/Event
+                                    Date</label>
+                                <input type="date" class="form-control-premium" id="date" required>
+                            </div>
+                        </div>
+
+                        <!-- Order Info -->
+                        <div class="form-section-title">
+                            <i class="fas fa-shopping-basket"></i> Order Details
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-clock"></i> Function Time</label>
+                                <select class="form-control-premium form-select" id="functionTime">
+                                    <option value="Morning">Morning</option>
+                                    <option value="Evening">Evening</option>
+                                    <option value="Full Day">Full Day</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="premium-label"><i class="fas fa-weight-hanging"></i> Quantity /
+                                    Count</label>
+                                <input type="text" class="form-control-premium" id="sweetQuantity" required
+                                    placeholder="e.g. 50 Boxes / 5 KG">
+                            </div>
+                            <div class="col-12">
+                                <label class="premium-label"><i class="fas fa-map-marker-alt"></i> Delivery
+                                    Address</label>
+                                <textarea class="form-control-premium" id="address" required rows="2"
+                                    placeholder="Full delivery address"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-premium-action">
+                            Confirm Order
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-panel border-gold text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-check-circle-fill text-gold" style="font-size: 4rem;"></i>
+                </div>
+                <h3 class="text-white fw-bold mb-2">Order Places!</h3>
+                <p class="text-white-50">Our team will contact you shortly regarding delivery.</p>
+                <button type="button" class="btn-secondary-glow mt-3" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // --- Dynamic Content Loading ---
+        async function loadDynamicContent() {
+            try {
+                const res = await fetch('/api/services?category=sweet');
+                const data = await res.json();
+
+                if (data && data.length > 0) {
+                    const service = data[0];
+
+                    // 1. Update Slideshow
+                    if (service.images && service.images.length > 0) {
+                        const container = document.querySelector('.slideshow-container');
+                        const controls = container.querySelector('.slide-controls');
+
+                        // Remove old slides
+                        container.querySelectorAll('.slide').forEach(el => el.remove());
+
+                        // Add new slides
+                        service.images.forEach((imgUrl, index) => {
+                            const slide = document.createElement('div');
+                            slide.className = `slide ${index === 0 ? 'active' : ''}`;
+                            slide.style.backgroundImage = `url('${imgUrl}')`;
+                            container.insertBefore(slide, controls);
+                        });
+
+                        // Re-init slideshow
+                        initSlideshow();
+                    }
+
+                    // 2. Show Discount Toast/Banner if exists
+                    if (service.discount) {
+                        const discountToast = document.createElement('div');
+                        discountToast.className = 'glass-panel p-3 text-center mb-4 border-gold animation-pulse';
+                        discountToast.style.border = '2px dashed #fcdc3b';
+                        discountToast.style.background = 'rgba(252, 220, 59, 0.1)';
+                        discountToast.innerHTML = `
+                            <h4 class="text-gold m-0 fw-bold"><i class="fas fa-tags me-2"></i> ${service.discount}</h4>
+                            ${service.description ? `<p class="text-white-50 m-0 small mt-1">${service.description}</p>` : ''}
+                        `;
+                        // Insert after hero title
+                        const title = document.querySelector('.hero-title');
+                        title.parentNode.insertBefore(discountToast, title.nextSibling);
+                    }
+                } else {
+                    initSlideshow();
+                }
+            } catch (e) {
+                console.error('Failed to load dynamic content', e);
+                initSlideshow();
+            }
+        }
+
+        // Slideshow
+        let slideIndex = 0;
+        let slideTimer;
+
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            if (slides.length === 0) return;
+
+            // Reset state
+            slideIndex = 0;
+            if (slideTimer) clearTimeout(slideTimer);
+
+            showSlide(0);
+        }
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            if (slides.length === 0) return;
+
+            if (index >= slides.length) slideIndex = 0;
+            else if (index < 0) slideIndex = slides.length - 1;
+            else slideIndex = index;
+
+            slides.forEach(s => s.classList.remove('active'));
+            slides[slideIndex].classList.add('active');
+
+            clearTimeout(slideTimer);
+            slideTimer = setTimeout(() => {
+                showSlide(slideIndex + 1);
+            }, 4000);
+        }
+
+        function changeSlide(n) {
+            showSlide(slideIndex + n);
+        }
+
+        const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+
+        function openBookingModal(name, price) {
+            // Keep hidden fields for form submission logic
+            document.getElementById('selectedItemName').textContent = name;
+            document.getElementById('selectedItemPrice').textContent = price;
+
+            // Update new premium banner
+            document.getElementById('displayItem').innerText = name;
+            document.getElementById('displayPrice').innerText = price;
+
+            if (window.Clerk && Clerk.user) {
+                document.getElementById('name').value = Clerk.user.fullName || '';
+                document.getElementById('email').value = Clerk.user.primaryEmailAddress.emailAddress || '';
+                fetch(`/api/user/${Clerk.user.id}`)
+                    .then(res => res.json())
+                    .then(user => {
+                        if (user && user.clerkId) {
+                            if (user.phone) document.getElementById('phone').value = user.phone;
+                            if (user.location) document.getElementById('address').value = user.location;
+                        }
+                    }).catch(e => console.log(e));
+            }
+
+            bookingModal.show();
+        }
+
+        async function handleBooking(e) {
+            e.preventDefault();
+            const bookingData = {
+                clerkId: window.Clerk?.user?.id,
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                address: document.getElementById('address').value,
+                serviceType: 'Sweet Stall',
+                serviceName: document.getElementById('selectedItemName').textContent,
+                date: document.getElementById('date').value,
+
+                // Schema Mappings
+                sweetQuantity: document.getElementById('sweetQuantity').value,
+                functionTime: document.getElementById('functionTime').value,
+                status: 'Pending'
+            };
+
+            try {
+                const res = await fetch('/api/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    bookingModal.hide();
+                    new bootstrap.Modal(document.getElementById('successModal')).show();
+                    e.target.reset();
+                } else {
+                    alert('Order failed: ' + result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('An error occurred.');
+            }
+        }
+
+        // Clerk Init
+        window.addEventListener('load', async function () {
+            await loadDynamicContent();
+
+            if (window.Clerk) {
+                await window.Clerk.load({
+                    appearance: {
+                        baseTheme: 'dark',
+                        variables: {
+                            colorPrimary: '#fcdc3b',
+                            colorBackground: '#0f0f0f',
+                            colorText: 'white',
+                            borderRadius: '12px',
+                            fontFamily: "'Outfit', sans-serif"
+                        }
+                    }
+                });
+
+                if (Clerk.user) {
+                    Clerk.mountUserButton(document.getElementById('user-button'));
+                } else {
+                    const userButton = document.getElementById('user-button');
+                    userButton.innerHTML = '<button class="btn-primary-glow" onclick="Clerk.openSignIn()">Sign In</button>';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

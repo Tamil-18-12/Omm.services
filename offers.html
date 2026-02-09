@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Offers | OM Service</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Clerk Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"
+        data-clerk-publishable-key="pk_test_ZXZvbHZlZC1ib2EtMS5jbGVyay5hY2NvdW50cy5kZXYk" crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid container-lg">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo-removebg-preview.png" alt="Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span style="filter: invert(1);"><i class="bi bi-list fs-1"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+
+                    <li class="nav-item"><a class="nav-link active" href="offers.html">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item join-btn-wrapper" id="clerk-auth">
+                        <a class="nav-link" onclick="Clerk.openSignIn()">
+                            <span class="join-btn">
+                                <i class="bi bi-person-fill"></i> Login
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="user-button"></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5 mb-5 ps-3 pe-3">
+
+        <div class="text-center mt-4 mb-5">
+            <h1 class="page-title text-warning mb-3">Exclusive Packages</h1>
+            <p class="text-white-50">Choose the perfect combination of services for your event.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Premium Package -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel p-0 h-100 hover-lift border-warning border-opacity-50 position-relative">
+                    <div
+                        class="position-absolute top-0 end-0 bg-warning text-dark fw-bold px-3 py-1 rounded-bottom-start shadow">
+                        BEST VALUE
+                    </div>
+                    <img src="offer1.png" alt="Premium Package" class="w-100" style="height: 200px; object-fit: cover;">
+
+                    <div class="p-4 d-flex flex-column h-100">
+                        <h3 class="text-warning text-center fw-bold mb-4">Premium Package</h3>
+
+                        <ul class="list-unstyled text-white-50 flex-grow-1">
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-egg-fried text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Catering</strong>
+                                    <span class="small">Banana Leaf & Grand Buffet</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Photography</strong>
+                                    <span class="small">Cinematic, Drone, Traditional</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-bus-front text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Travels</strong>
+                                    <span class="small">54 Seater Luxury Bus</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-star text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Sweet Stall</strong>
+                                    <span class="small">Unlimited Varieties</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="text-center mt-4">
+                            <span class="badge bg-danger mb-2">Save 15%</span>
+                            <h2 class="text-white fw-bold">₹ 1,30,000</h2>
+                            <button class="btn btn-warning w-100 mt-3 fw-bold rounded-pill"
+                                onclick="openBookingModal('Premium Package', '₹ 1,30,000')">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standard Package -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel p-0 h-100 hover-lift">
+                    <img src="offer2.png" alt="Standard Package" class="w-100"
+                        style="height: 200px; object-fit: cover;">
+
+                    <div class="p-4 d-flex flex-column h-100">
+                        <h3 class="text-white text-center fw-bold mb-4">Standard Package</h3>
+
+                        <ul class="list-unstyled text-white-50 flex-grow-1">
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-egg-fried text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Catering</strong>
+                                    <span class="small">Banana Leaf / Buffet</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Photography</strong>
+                                    <span class="small">Photo & Video Coverage</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-bus-front text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Travels</strong>
+                                    <span class="small">22 Seater AC</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-star text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Sweet Stall</strong>
+                                    <span class="small">Standard Select</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="text-center mt-4">
+                            <span class="badge bg-danger mb-2">Save 12%</span>
+                            <h2 class="text-white fw-bold">₹ 90,000</h2>
+                            <button class="btn btn-outline-warning w-100 mt-3 fw-bold rounded-pill"
+                                onclick="openBookingModal('Standard Package', '₹ 90,000')">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Package -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel p-0 h-100 hover-lift">
+                    <img src="offer3.png" alt="Basic Package" class="w-100" style="height: 200px; object-fit: cover;">
+
+                    <div class="p-4 d-flex flex-column h-100">
+                        <h3 class="text-white-50 text-center fw-bold mb-4">Basic Package</h3>
+
+                        <ul class="list-unstyled text-white-50 flex-grow-1">
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-egg-fried text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Catering</strong>
+                                    <span class="small">Banana Leaf Only</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Photography</strong>
+                                    <span class="small">Traditional Coverage</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-bus-front text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Travels</strong>
+                                    <span class="small">12 Seater TT</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-star text-warning me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-white">Sweet Stall</strong>
+                                    <span class="small">Limited</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="text-center mt-4">
+                            <span class="badge bg-danger mb-2">Save 10%</span>
+                            <h2 class="text-white fw-bold">₹ 85,000</h2>
+                            <button class="btn btn-outline-warning w-100 mt-3 fw-bold rounded-pill"
+                                onclick="openBookingModal('Basic Package', '₹ 85,000')">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content glass-panel p-0 border-0">
+                <div class="modal-header border-bottom border-secondary">
+                    <div>
+                        <h5 class="modal-title text-warning fw-bold">Request Package</h5>
+                        <p class="mb-0 text-white-50 small">Fill in the details to request this package</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 p-md-5">
+                    <div
+                        class="alert alert-warning border-0 bg-warning bg-opacity-10 text-white d-flex align-items-center mb-4">
+                        <i class="bi bi-gift-fill text-warning me-3 fs-3"></i>
+                        <div>
+                            <small class="text-white-50 d-block text-uppercase">Selected Package</small>
+                            <span class="fw-bold text-warning" id="selectedPackageName">...</span>
+                            <span class="mx-2 text-white-50">|</span>
+                            <span class="text-white" id="selectedPackagePrice">...</span>
+                        </div>
+                    </div>
+
+                    <form id="bookingForm" onsubmit="handleBooking(event)">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-warning small">Full Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-warning small">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-warning small">Email Address</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-warning small">Event Date</label>
+                                <input type="date" class="form-control" id="date" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-warning small">Message / Special Requests</label>
+                                <textarea class="form-control" id="message" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary-glow w-100 mt-5 py-3">
+                            <i class="bi bi-send-check me-2"></i>Submit Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-panel border-warning text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-check-circle-fill text-warning" style="font-size: 4rem;"></i>
+                </div>
+                <h3 class="text-white fw-bold mb-2">Request Sent!</h3>
+                <p class="text-white-50">Our team will contact you shortly to confirm your package.</p>
+                <button type="button" class="btn btn-outline-warning mt-3 rounded-pill px-4"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+
+        function openBookingModal(name, price) {
+            document.getElementById('selectedPackageName').textContent = name;
+            document.getElementById('selectedPackagePrice').textContent = price;
+
+            if (window.Clerk && Clerk.user) {
+                document.getElementById('name').value = Clerk.user.fullName || '';
+                document.getElementById('email').value = Clerk.user.primaryEmailAddress.emailAddress || '';
+                fetch(`/api/user/${Clerk.user.id}`)
+                    .then(res => res.json())
+                    .then(user => {
+                        if (user && user.clerkId) {
+                            if (user.phone) document.getElementById('phone').value = user.phone;
+                        }
+                    }).catch(e => console.log(e));
+            }
+
+            bookingModal.show();
+        }
+
+        async function handleBooking(e) {
+            e.preventDefault();
+            const bookingData = {
+                clerkId: window.Clerk?.user?.id,
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                serviceType: document.getElementById('selectedPackageName').textContent,
+                serviceName: 'Package Deal',
+                date: document.getElementById('date').value,
+                notes: document.getElementById('message').value, // Map message to notes
+                status: 'Pending'
+            };
+
+            try {
+                const res = await fetch('/api/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    bookingModal.hide();
+                    new bootstrap.Modal(document.getElementById('successModal')).show();
+                    e.target.reset();
+                } else {
+                    alert('Request failed: ' + result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('An error occurred.');
+            }
+        }
+
+        // Clerk Init
+        window.addEventListener('load', async function () {
+            if (window.Clerk) {
+                await window.Clerk.load({
+                    appearance: {
+                        baseTheme: 'dark',
+                        variables: {
+                            colorPrimary: '#D4AF37',
+                            colorBackground: '#101010'
+                        }
+                    }
+                });
+                if (Clerk.user) {
+                    document.getElementById('clerk-auth').style.display = 'none';
+                    Clerk.mountUserButton(document.getElementById('user-button'));
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

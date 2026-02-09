@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | OM Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --sidebar-bg: #19021C;
+            --main-bg: #0f0f0f;
+            --gold: #fcdc3b;
+            --card-bg: #1e0321;
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: var(--sidebar-bg);
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid rgba(252, 220, 59, 0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            color: var(--gold);
+            font-size: 1.8rem;
+        }
+
+        .brand-text {
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 16px 25px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(252, 220, 59, 0.05);
+            /* Very subtle gold tint */
+            color: white;
+            border-left-color: var(--gold);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(90deg, rgba(252, 220, 59, 0.15), transparent);
+        }
+
+        .nav-link i {
+            width: 30px;
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-right: 10px;
+        }
+
+        .logout-btn-area {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
+            width: calc(100% - 260px);
+        }
+
+        /* Top Bar */
+        .top-action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: var(--card-bg);
+            border: 1px solid rgba(252, 220, 59, 0.1);
+            border-radius: 12px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-container input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(252, 220, 59, 0.2);
+            color: white;
+            padding: 10px 15px 10px 40px;
+            border-radius: 25px;
+            width: 100%;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-container input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(252, 220, 59, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-left: 10px;
+            display: inline-flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .btn-exp-excel {
+            background: rgba(40, 167, 69, 0.15);
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+
+        .btn-exp-excel:hover {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-exp-pdf {
+            background: rgba(220, 53, 69, 0.15);
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .btn-exp-pdf:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Panel Visibility Logic */
+        .content-section {
+            display: none;
+            /* Hidden by default */
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content-section.active {
+            display: block;
+            /* Show active */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Cards & Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(252, 220, 59, 0.1);
+            padding: 25px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-icon-large {
+            font-size: 2.5rem;
+            color: rgba(252, 220, 59, 0.2);
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+        }
+
+        .stat-val {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Tables - STRICT STYLING */
+        .table-wrap {
+            background: var(--sidebar-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(252, 220, 59, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #2b0530 !important;
+            color: var(--gold);
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.9);
+            background: #19021C;
+            /* Enforce dark bg */
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #230429 !important;
+        }
+
+        .btn-sm-action {
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-sm-action:hover {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .info-cell {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-sub {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="login-view"
+        style="height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f0f0f 0%, #19021C 100%);">
+        <div
+            style="background: rgba(25, 2, 28, 0.8); padding: 40px; border-radius: 20px; border: 1px solid rgba(252, 220, 59, 0.2); width: 100%; max-width: 400px; box-shadow: 0 0 50px rgba(0,0,0,0.5);">
+            <div class="text-center mb-4">
+                <i class="fas fa-shield-alt text-gold" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                <h2 class="text-gold fw-bold">Admin Portal</h2>
+                <p class="text-white-50">Please authenticate to continue</p>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-3">
+                    <input type="text" id="loginUser" class="form-control" placeholder="Username"
+                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; border-radius: 10px;">
+                </div>
+                <div class="mb-4">
+                    <input type="password" id="loginPass" class="form-control" placeholder="Password"
+                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; border-radius: 10px;">
+                </div>
+                <button type="submit" class="btn btn-warning w-100 fw-bold py-3"
+                    style="border-radius: 10px; font-size: 1.1rem;">
+                    Access Dashboard <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+            </form>
+            <div id="loginError" class="text-center mt-3 text-danger small"></div>
+            <div class="text-center mt-3">
+                <a href="index.html" class="text-white-50 text-decoration-none small"><i
+                        class="fas fa-arrow-left me-1"></i> Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboard-view" style="display: none;">
+        <!-- SIDEBAR -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-shield-alt brand-icon"></i>
+                <div class="brand-text">Admin<br><span
+                        style="color:white; font-size:0.9em; font-weight:400;">Dashboard</span></div>
+            </div>
+
+            <ul class="nav-menu">
+                <!-- Navigation Links -->
+                <li class="nav-item">
+                    <div class="nav-link active" onclick="showSection('overview', this)">
+                        <i class="fas fa-th-large"></i> Overview
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('catering', this)">
+                        <i class="fas fa-utensils"></i> Catering
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('travels', this)">
+                        <i class="fas fa-bus"></i> Travels
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('photography', this)">
+                        <i class="fas fa-camera"></i> Photography
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('sweets', this)">
+                        <i class="fas fa-candy-cane"></i> Sweet Stall
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('manage-content', this)">
+                        <i class="fas fa-images"></i> Manage Content
+                    </div>
+                </li>
+            </ul>
+
+            <div class="logout-btn-area">
+                <button onclick="logout()" class="btn btn-outline-warning w-100 fw-bold">Logout</button>
+            </div>
+        </nav>
+
+        <!-- CONTENT -->
+        <div class="main-content">
+
+            <!-- TOP ACTION BAR -->
+            <div class="top-action-bar">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Search bookings...">
+                </div>
+                <div class="action-buttons">
+                    <a href="/api/admin/export/excel" class="btn-exp-excel"><i class="fas fa-file-excel me-2"></i>Export
+                        Excel</a>
+                    <a href="/api/admin/export/pdf-all" class="btn-exp-pdf"><i class="fas fa-file-pdf me-2"></i>Export
+                        PDF</a>
+                </div>
+            </div>
+
+            <!-- SECTION 1: OVERVIEW -->
+            <div id="overview" class="content-section active">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="text-white fw-bold m-0 ps-2">Business Overview</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <!-- Total -->
+                    <div class="stat-card">
+                        <div>
+                            <div class="stat-val" id="total-count">0</div>
+                            <div class="stat-label">Total Bookings</div>
+                        </div>
+                        <i class="fas fa-chart-line stat-icon-large"></i>
+                    </div>
+                    <!-- Catering -->
+                    <div class="stat-card">
+                        <div>
+                            <div class="stat-val" id="cat-count">0</div>
+                            <div class="stat-label">Catering Orders</div>
+                        </div>
+                        <i class="fas fa-utensils stat-icon-large"></i>
+                    </div>
+                    <!-- Travels -->
+                    <div class="stat-card">
+                        <div>
+                            <div class="stat-val" id="trav-count">0</div>
+                            <div class="stat-label">Travel Trips</div>
+                        </div>
+                        <i class="fas fa-bus stat-icon-large"></i>
+                    </div>
+                    <!-- Photo -->
+                    <div class="stat-card">
+                        <div>
+                            <div class="stat-val" id="photo-count">0</div>
+                            <div class="stat-label">Photo Gigs</div>
+                        </div>
+                        <i class="fas fa-camera stat-icon-large"></i>
+                    </div>
+                </div>
+
+                <!-- All Bookings Table (Master List) -->
+                <h4 class="text-gold mt-5 mb-3 ps-2">All Bookings (Master List)</h4>
+                <div class="table-wrap">
+                    <table id="table-overview">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Age</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Service</th>
+                                <th>Status</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-tbody">
+                            <tr>
+                                <td colspan="9">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECTION 2: CATERING -->
+            <div id="catering" class="content-section">
+                <h2 class="text-gold mb-4"><i class="fas fa-utensils me-2"></i>Catering Management</h2>
+                <div class="table-wrap">
+                    <table id="table-catering">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer Name</th>
+                                <th>Phone</th>
+                                <th>Guest Count</th>
+                                <th>Details</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="catering-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECTION 3: TRAVELS -->
+            <div id="travels" class="content-section">
+                <h2 class="text-gold mb-4"><i class="fas fa-bus me-2"></i>Travels Management</h2>
+                <div class="table-wrap">
+                    <table id="table-travels">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Destination</th>
+                                <th>Route</th>
+                                <th>Vehicle/Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="travels-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECTION 4: PHOTOGRAPHY -->
+            <div id="photography" class="content-section">
+                <h2 class="text-gold mb-4"><i class="fas fa-camera me-2"></i>Photography Management</h2>
+                <div class="table-wrap">
+                    <table id="table-photography">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Event Type</th>
+                                <th>Customer</th>
+                                <th>Package</th>
+                                <th>Duration/Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="photography-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECTION 5: SWEETS -->
+            <div id="sweets" class="content-section">
+                <h2 class="text-gold mb-4"><i class="fas fa-candy-cane me-2"></i>Sweet Stall Management</h2>
+                <div class="table-wrap">
+                    <table id="table-sweets">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Item Name</th>
+                                <th>Customer</th>
+                                <th>Quantity</th>
+                                <th>Time/Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sweets-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECTION 6: MANAGE CONTENT -->
+            <div id="manage-content" class="content-section">
+                <h2 class="text-gold mb-4"><i class="fas fa-edit me-2"></i>Manage Site Content</h2>
+
+                <div class="glass-panel p-4"
+                    style="background: var(--card-bg); border: 1px solid rgba(252, 220, 59, 0.1); border-radius: 12px;">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="text-white-50 mb-2">Select Service Page</label>
+                            <select id="serviceSelect" class="form-control"
+                                style="background: #2b0530; color: white; border-color: #fcdc3b;"
+                                onchange="loadServiceDetails()">
+                                <option value="catering">Catering Service</option>
+                                <option value="photography">Photography</option>
+                                <option value="travel">Travels</option>
+                                <option value="sweet">Sweet Stall</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <hr class="border-white opacity-10 my-4">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="text-white fw-bold mb-2">Discount / Offer Text</label>
+                            <input type="text" id="serviceDiscount" class="form-control mb-3"
+                                placeholder="e.g. 10% OFF Quote"
+                                style="background: #19021C; color: white; border: 1px solid rgba(255,255,255,0.1);">
+
+                            <label class="text-white fw-bold mb-2">Description / Tagline</label>
+                            <textarea id="serviceDesc" class="form-control" rows="3" placeholder="Page description..."
+                                style="background: #19021C; color: white; border: 1px solid rgba(255,255,255,0.1);"></textarea>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="text-white fw-bold mb-3">Service Gallery</label>
+
+                            <!-- Gallery Container -->
+                            <div class="gallery-manager p-3 rounded"
+                                style="background: #19021C; border: 1px solid rgba(255,255,255,0.1); min-height: 200px;">
+
+                                <!-- Image Grid -->
+                                <div id="imageGrid" class="d-flex flex-wrap gap-3 mb-3">
+                                    <!-- Dynamic Images will appear here -->
+                                </div>
+
+                                <!-- Upload Button controls -->
+                                <div class="dashed-upload-box text-center p-4 rounded text-white-50 cursor-pointer hover-gold border-dashed"
+                                    onclick="document.getElementById('galleryUpload').click()"
+                                    style="border: 2px dashed rgba(255,255,255,0.2);">
+                                    <i class="fas fa-cloud-upload-alt fs-2 mb-2"></i>
+                                    <p class="m-0 small">Click to Upload New Image</p>
+                                </div>
+
+                                <input type="file" id="galleryUpload" hidden accept="image/*"
+                                    onchange="handleGalleryUpload(this)">
+                            </div>
+                            <small class="text-white-50 d-block mt-2">Upload images to update the slideshow
+                                instantly.</small>
+                        </div>
+
+                        <div class="col-12 text-end mt-4 pt-3 border-top border-white border-opacity-10">
+                            <button onclick="saveServiceDetails()" class="btn btn-warning fw-bold px-5 py-3 shadow-lg"
+                                style="background: #fcdc3b; border: none; font-size: 1.1em;">
+                                <i class="fas fa-save me-2"></i>Update Service Page
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div> <!-- End Dashboard View -->
+
+    <script>
+        // Check Auth immediately
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        if (isAdmin) {
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+        } else {
+            document.getElementById('login-view').style.display = 'flex';
+            document.getElementById('dashboard-view').style.display = 'none';
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('loginUser').value;
+            const p = document.getElementById('loginPass').value;
+            const err = document.getElementById('loginError');
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    localStorage.setItem('isAdmin', 'true');
+                    window.location.reload();
+                } else {
+                    err.textContent = 'Invalid credentials. Please try again.';
+                }
+            } catch (error) {
+                console.error(error);
+                err.textContent = 'Connection error.';
+            }
+        }
+
+        // Original Check (Removed)
+        // if (localStorage.getItem('isAdmin') !== 'true') window.location.href = 'index.html';
+
+        let allData = [];
+        let currentlyVisibleTableId = 'table-overview'; // Default
+
+        // Tab Switching Logic
+        function showSection(sectionId, element) {
+            // Update Menu Active State
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            // Hide all content sections
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Set visible table ID for search
+            if (sectionId === 'overview') currentlyVisibleTableId = 'table-overview';
+            if (sectionId === 'catering') currentlyVisibleTableId = 'table-catering';
+            if (sectionId === 'travels') currentlyVisibleTableId = 'table-travels';
+            if (sectionId === 'photography') currentlyVisibleTableId = 'table-photography';
+            if (sectionId === 'sweets') currentlyVisibleTableId = 'table-sweets';
+
+            // Clear search when switching
+            document.getElementById('tableSearch').value = '';
+            filterTable();
+        }
+
+        function filterTable() {
+            const input = document.getElementById('tableSearch');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById(currentlyVisibleTableId);
+            const tr = table.getElementsByTagName('tr');
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (let i = 1; i < tr.length; i++) { // Start at 1 to skip header
+                let rowText = tr[i].textContent.toLowerCase();
+                if (rowText.indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        // Data Loading
+        async function loadData() {
+            try {
+                const res = await fetch('/api/bookings');
+                allData = await res.json();
+
+                // Update Overview Counts
+                document.getElementById('total-count').textContent = allData.length;
+                document.getElementById('cat-count').textContent = allData.filter(x => x.serviceType.toLowerCase().includes('catering')).length;
+                document.getElementById('trav-count').textContent = allData.filter(x => x.serviceType.toLowerCase().includes('travel')).length;
+                document.getElementById('photo-count').textContent = allData.filter(x => x.serviceType.toLowerCase().includes('photo')).length;
+
+                // Populate ALL Bookings Table (Overview)
+                document.getElementById('recent-tbody').innerHTML = allData.length ? allData.map(r => `
+                    <tr>
+                        <td>${r.date || '-'}</td>
+                        <td class="fw-bold">${r.name || 'Guest'}</td>
+                        <td>${r.age || '-'}</td>
+                        <td>${r.phone || '-'}</td>
+                        <td class="small text-white-50">${r.email || '-'}</td>
+                        <td class="small text-white-50">${r.address || '-'}</td>
+                        <td class="text-gold fw-bold">${r.serviceType}</td>
+                        <td>${getStatusBadge(r._id, r.status)}</td>
+                        <td class="text-end"><button class="btn-sm-action" onclick="deleteBooking('${r._id}')">Delete</button></td>
+                    </tr>
+                `).join('') : '<tr><td colspan="9" class="p-4 text-center text-white-50">No bookings found.</td></tr>';
+
+                // Populate Specific Tables
+                loadTable('catering-tbody', 'catering');
+                loadTable('travels-tbody', 'travel');
+                loadTable('photography-tbody', 'photo');
+                loadTable('sweets-tbody', 'sweet');
+
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function loadTable(elementId, filterKey) {
+            const tbody = document.getElementById(elementId);
+            const data = allData.filter(x => x.serviceType.toLowerCase().includes(filterKey));
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-white-50">No records found.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(Row => {
+                let col2, col3, col4, col5;
+
+                if (filterKey === 'catering') {
+                    // Catering: Name, Phone, Guest Count, Details (Meal + Duration)
+                    col2 = Row.name;
+                    col3 = Row.phone;
+                    col4 = `${Row.guests || 0} Guests`;
+                    col5 = `${Row.mealType || ''} (${Row.eventDuration || ''})`;
+                }
+                else if (filterKey === 'travel') {
+                    // Travels: Customer, Destination, From->To, Vehicle (Notes)
+                    col2 = Row.name;
+                    col3 = Row.serviceName; // Destination as defined in frontend
+                    col4 = `${Row.pickupLocation || '?'} <i class="fas fa-arrow-right small mx-1 text-gold"></i> ${Row.dropDestination || '?'}`;
+                    col5 = `${Row.notes || '-'} <span class="badge bg-secondary ms-1">${Row.passengerCount || '?'} Pax</span>`;
+                }
+                else if (filterKey === 'photo') {
+                    // Photography: Event, Customer, Package, Duration
+                    col2 = Row.eventType || 'Event';
+                    col3 = Row.name;
+                    col4 = Row.serviceName;
+                    col5 = Row.photographyDuration || Row.notes || '-';
+                }
+                else if (filterKey === 'sweet') {
+                    // Sweets: Item, Customer, Quantity, Time/Details
+                    col2 = Row.serviceName;
+                    col3 = Row.name;
+                    col4 = Row.sweetQuantity || '-';
+                    col5 = Row.functionTime || Row.notes || '-';
+                }
+
+                return `
+                <tr>
+                    <td>${Row.date}</td>
+                    <td class="text-gold fw-bold">${col2}</td>
+                    <td>${col3}</td>
+                    <td>${col4}</td>
+                    <td class="small text-white-50">${col5}</td>
+                    <td><button class="btn-sm-action" onclick="deleteBooking('${Row._id}')">Delete</button></td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function getStatusBadge(id, status) {
+            const current = status || 'Pending';
+            const isDone = current === 'Done';
+            const badgeClass = isDone ? 'bg-success' : 'bg-warning text-dark';
+            return `<span class="badge ${badgeClass}" style="cursor:pointer; user-select:none;" onclick="updateStatus('${id}', '${current}')">${current}</span>`;
+        }
+
+        async function updateStatus(id, currentStatus) {
+            const newStatus = currentStatus === 'Pending' ? 'Done' : 'Pending';
+            try {
+                const res = await fetch(`/api/bookings/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (res.ok) {
+                    loadData();
+                } else {
+                    alert('Failed to update status');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Connection error');
+            }
+        }
+
+        async function deleteBooking(id) {
+            if (confirm('Are you sure you want to permanently delete this booking?')) {
+                await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+                // Re-fetch to ensure sync with backend
+                loadData();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isAdmin');
+            // Reload to show login view
+            window.location.reload();
+        }
+
+        // --- Manage Content Logic ---
+        // --- Gallery Management Logic ---
+        let currentGalleryImages = [];
+
+        async function loadServiceDetails() {
+            const category = document.getElementById('serviceSelect').value;
+            const discountInput = document.getElementById('serviceDiscount');
+            const descInput = document.getElementById('serviceDesc');
+
+            // Reset UI
+            discountInput.value = '';
+            descInput.value = '';
+            currentGalleryImages = [];
+            renderGallery();
+
+            try {
+                const res = await fetch(`/api/services?category=${category}`);
+                const data = await res.json();
+
+                if (data && data.length > 0) {
+                    const service = data[0];
+                    discountInput.value = service.discount || '';
+                    descInput.value = service.description || '';
+                    currentGalleryImages = service.images || [];
+                    renderGallery();
+                }
+            } catch (error) {
+                console.error('Error loading service details:', error);
+                alert('Failed to load service data.');
+            }
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('imageGrid');
+            if (grid) {
+                grid.innerHTML = '';
+
+                currentGalleryImages.forEach((url, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'position-relative';
+                    div.style.width = '100px';
+                    div.style.height = '100px';
+
+                    div.innerHTML = `
+                        <div class="ratio ratio-1x1 h-100 rounded overflow-hidden border border-secondary">
+                            <img src="${url}" class="object-fit-cover w-100 h-100" alt="Gallery Image">
+                        </div>
+                        <button onclick="removeGalleryImage(${index})" 
+                                class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 p-0 d-flex align-items-center justify-content-center rounded-circle"
+                                style="width: 20px; height: 20px; font-size: 10px;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    grid.appendChild(div);
+                });
+            }
+        }
+
+        async function handleGalleryUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            // Show loading state placeholder? 
+            // For now specific implementation
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const res = await fetch('/api/admin/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    currentGalleryImages.push(data.imageUrl);
+                    renderGallery();
+                    input.value = ''; // Reset input
+                } else {
+                    alert('Upload failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Upload Error:', error);
+                alert('Upload failed.');
+            }
+        }
+
+        function removeGalleryImage(index) {
+            if (confirm('Remove this image?')) {
+                currentGalleryImages.splice(index, 1);
+                renderGallery();
+            }
+        }
+
+        async function saveServiceDetails() {
+            const category = document.getElementById('serviceSelect').value;
+            const discount = document.getElementById('serviceDiscount').value;
+            const description = document.getElementById('serviceDesc').value;
+
+            // Use global array
+            const images = currentGalleryImages;
+
+            const payload = {
+                category,
+                discount,
+                description,
+                images
+            };
+
+            const btn = document.querySelector('#manage-content button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/services', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    alert('Content updated successfully!');
+                } else {
+                    alert('Failed to update content.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error saving data.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Init
+        loadData();
+        // Trigger load for default selection
+        // We'll call this only when the section is shown to avoid unnecessary calls?
+        // Or just let the user triggering 'change' do it.
+        // But initial state should be loaded.
+        // Let's hook it into showSection or just call it if Manage Content is active (it's not by default).
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | OM Service</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- Clerk Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"
+        data-clerk-publishable-key="pk_test_ZXZvbHZlZC1ib2EtMS5jbGVyay5hY2NvdW50cy5kZXYk" crossorigin="anonymous">
+        </script>
+
+    <style>
+        :root {
+            --primary-gold: #fcdc3b;
+            --primary-dark: #19021C;
+            --secondary-dark: #250329;
+            --card-dark: #1e1e1e;
+            --accent-purple: #8b5cf6;
+            --success-green: #10b981;
+            --danger-red: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-light: rgba(252, 220, 59, 0.2);
+            --shadow-primary: 0 20px 40px rgba(252, 220, 59, 0.1);
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --gradient-primary: linear-gradient(135deg, #19021C 0%, #250329 100%);
+            --gradient-gold: linear-gradient(135deg, #fcdc3b 0%, #fbbf24 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0d1f 50%, #0f0f0f 100%);
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(252, 220, 59, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Enhanced Navbar */
+        .navbar {
+            background: rgba(25, 2, 28, 0.95) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-primary);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(25, 2, 28, 0.98) !important;
+        }
+
+        .navbar-brand img {
+            height: 55px;
+            filter: drop-shadow(0 4px 8px rgba(252, 220, 59, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem !important;
+            border-radius: 12px;
+            margin: 0 0.25rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(252, 220, 59, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-gold) !important;
+            background: rgba(252, 220, 59, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            padding-top: 120px;
+            padding-bottom: 80px;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        /* Enhanced Section Headers */
+        .section-header {
+            color: var(--primary-gold);
+            font-size: 1.3rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-gold);
+            border-radius: 2px;
+        }
+
+        .section-header i {
+            margin-right: 15px;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, var(--primary-gold), #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 2px 4px rgba(252, 220, 59, 0.3));
+        }
+
+        /* Enhanced Panels/Cards */
+        .dash-panel {
+            background: var(--gradient-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2.5rem;
+            height: 100%;
+            box-shadow: var(--shadow-card);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+            opacity: 0.5;
+        }
+
+        .dash-panel:hover {
+            border-color: rgba(252, 220, 59, 0.4);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(252, 220, 59, 0.15);
+        }
+
+        /* Enhanced Profile Section */
+        .profile-img-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--primary-gold);
+            box-shadow: 0 0 30px rgba(252, 220, 59, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .profile-img-container:hover .profile-img {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(252, 220, 59, 0.6);
+        }
+
+        .camera-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--gradient-gold);
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(252, 220, 59, 0.4);
+            font-size: 1.1rem;
+        }
+
+        .camera-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(252, 220, 59, 0.6);
+        }
+
+        /* Enhanced Stats Cards */
+        .stat-card {
+            background: rgba(37, 3, 41, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 160px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(252, 220, 59, 0.1) 180deg, transparent 360deg);
+            animation: rotate 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-12px) scale(1.05);
+            border-color: var(--primary-gold);
+            box-shadow: 0 20px 40px rgba(252, 220, 59, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 2.2rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 4px 8px rgba(252, 220, 59, 0.3));
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-gold), #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        /* Enhanced Form Styles */
+        .form-control,
+        .form-control:focus {
+            background: rgba(37, 3, 41, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(252, 220, 59, 0.3);
+            border-radius: 12px;
+            color: var(--text-primary);
+            padding: 0.875rem 1.25rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 0.25rem rgba(252, 220, 59, 0.15), 0 8px 25px rgba(252, 220, 59, 0.1);
+            background: rgba(37, 3, 41, 0.95);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        label {
+            color: var(--primary-gold);
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Enhanced Booking Rows */
+        .booking-row {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.75rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .booking-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-gold), #fbbf24);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .booking-row:hover {
+            background: rgba(252, 220, 59, 0.08);
+            border-color: rgba(252, 220, 59, 0.2);
+            transform: translateX(8px);
+        }
+
+        .booking-row:hover::before {
+            transform: scaleY(1);
+        }
+
+        .booking-service {
+            color: var(--primary-gold);
+            font-weight: 800;
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .booking-date {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Enhanced Buttons */
+        .btn {
+            border-radius: 12px;
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-warning {
+            background: var(--gradient-gold);
+            border: none;
+            color: #000;
+            box-shadow: 0 8px 25px rgba(252, 220, 59, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(252, 220, 59, 0.4);
+            color: #000;
+        }
+
+        .action-btn {
+            padding: 0.625rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: 2px solid var(--primary-gold);
+            color: var(--primary-gold);
+            margin: 0 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: var(--gradient-gold);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(252, 220, 59, 0.3);
+        }
+
+        .delete-btn {
+            border-color: var(--danger-red);
+            color: var(--danger-red);
+        }
+
+        .delete-btn:hover {
+            background: var(--danger-red);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Enhanced Stats Overview */
+        .stats-overview {
+            background: rgba(139, 92, 246, 0.03);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(20px);
+        }
+
+        .stats-overview h2 {
+            background: linear-gradient(135deg, var(--primary-gold), #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            font-size: 3.5rem;
+            line-height: 1;
+        }
+
+        /* Loading Animation */
+        .loading-container {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner-custom {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(252, 220, 59, 0.1);
+            border-top: 4px solid var(--primary-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Modal Enhancements */
+        .modal-content {
+            background: var(--gradient-primary);
+            border: 2px solid var(--border-light);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(252, 220, 59, 0.2);
+            padding-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            color: var(--primary-gold);
+            font-weight: 800;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                padding-top: 100px;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            .profile-img-container {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(25, 2, 28, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--primary-gold), #fbbf24);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-gold);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Enhanced Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo-removebg-preview.png" alt="OM Service Logo">
+            </a>
+            <button class="navbar-toggler border-0 p-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <i class="fas fa-bars text-gold fs-3"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="#"><i
+                                class="fas fa-tachometer-alt me-1"></i>Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="go.html"><i
+                                class="fas fa-concierge-bell me-1"></i>Services</a></li>
+                </ul>
+                <div class="navbar-nav ms-auto">
+                    <div id="user-button"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container dashboard-container">
+        <!-- Enhanced Loading State -->
+        <div id="loading" class="loading-container">
+            <div class="spinner-custom mb-4"></div>
+            <div class="text-center">
+                <h3 class="text-gold mb-2 animate__animated animate__pulse animate__infinite">Loading Dashboard</h3>
+                <p class="text-muted mb-0">Please wait while we prepare your personalized dashboard...</p>
+            </div>
+        </div>
+
+        <div id="dashboard-content" style="display: none;">
+            <!-- Profile & Stats Row -->
+            <div class="row g-4 mb-5">
+                <!-- Enhanced Profile Section -->
+                <div class="col-lg-8">
+                    <div class="section-header">
+                        <i class="fas fa-user-astronaut"></i>
+                        Personal Profile
+                    </div>
+                    <div class="dash-panel">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-center">
+                                <div class="profile-img-container">
+                                    <img id="user-avatar" class="profile-img"
+                                        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Crect width='140' height='140' fill='%23250329'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='60' fill='%23fcdc3b' text-anchor='middle' dy='.35em'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E"
+                                        alt="Profile">
+                                    <label for="prof-image" class="camera-btn" title="Change Profile Picture">
+                                        <i class="fas fa-camera"></i>
+                                    </label>
+                                    <input type="file" id="prof-image" hidden accept="image/*"
+                                        onchange="previewImage(this)">
+                                </div>
+                                <h3 id="display-name" class="fw-bold mb-2 animate__animated animate__fadeIn">Loading...
+                                </h3>
+                                <p id="display-email"
+                                    class="text-muted small mb-0 animate__animated animate__fadeIn animate__delay-1s">
+                                    Loading email...</p>
+                            </div>
+                            <div class="col-md-8 pt-4 pt-md-0 ps-md-5">
+                                <form id="profileForm">
+                                    <div class="row g-3">
+                                        <div class="col-lg-6">
+                                            <label><i class="fas fa-user me-1"></i>Full Name</label>
+                                            <input type="text" id="prof-name" class="form-control" required>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label><i class="fas fa-phone me-1"></i>Phone Number</label>
+                                            <input type="tel" id="prof-phone" class="form-control" required>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label><i class="fas fa-birthday-cake me-1"></i>Age</label>
+                                            <input type="number" id="prof-age" class="form-control" min="18" max="100"
+                                                required>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label><i class="fas fa-map-marker-alt me-1"></i>Location</label>
+                                            <input type="text" id="prof-address" class="form-control" required>
+                                        </div>
+                                        <div class="col-12 text-end mt-4">
+                                            <button type="submit" class="btn btn-warning px-5 py-2 fs-6">
+                                                <i class="fas fa-save me-2"></i>Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Account Insights -->
+                <div class="col-lg-4">
+                    <div class="section-header">
+                        <i class="fas fa-chart-line"></i>
+                        Quick Stats
+                    </div>
+                    <div
+                        class="dash-panel stats-overview h-100 d-flex flex-column justify-content-center text-center p-4">
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <div id="total-bookings-count" class="h2 text-gold fw-bold mb-2">0</div>
+                                <small class="text-uppercase text-muted fw-bold">Total Bookings</small>
+                            </div>
+                            <div class="col-6">
+                                <div id="active-bookings-count" class="h2 text-gold fw-bold mb-2">0</div>
+                                <small class="text-uppercase text-muted fw-bold">Active</small>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-top border-warning border-opacity-25">
+                            <p class="text-muted small mb-3">Ready for your next celebration?</p>
+                            <a href="go.html" class="btn btn-warning w-100 fw-bold py-2">
+                                <i class="fas fa-plus-circle me-2"></i>Book New Service
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Service Breakdown -->
+            <div class="section-header">
+                <i class="fas fa-layer-group"></i>
+                Service Analytics
+            </div>
+            <div class="row g-4 mb-5">
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="stat-card">
+                        <i class="fas fa-utensils stat-icon"></i>
+                        <div class="stat-number" id="stat-catering">0</div>
+                        <div class="stat-label">Catering</div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="stat-card">
+                        <i class="fas fa-bus stat-icon"></i>
+                        <div class="stat-number" id="stat-travels">0</div>
+                        <div class="stat-label">Travels</div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="stat-card">
+                        <i class="fas fa-camera-retro stat-icon"></i>
+                        <div class="stat-number" id="stat-photo">0</div>
+                        <div class="stat-label">Photography</div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="stat-card">
+                        <i class="fas fa-candy-cane stat-icon"></i>
+                        <div class="stat-number" id="stat-sweets">0</div>
+                        <div class="stat-label">Sweets</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Recent Bookings -->
+            <div class="section-header">
+                <i class="fas fa-history"></i>
+                Recent Bookings
+            </div>
+            <div class="dash-panel p-0">
+                <div id="bookings-container" class="p-4">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Edit Booking Modal -->
+    <div class="modal fade" id="editBookingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom border-warning border-opacity-25">
+                    <h5 class="modal-title text-gold fw-bold">
+                        <i class="fas fa-edit me-2"></i>Edit Booking
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="editBookingForm">
+                        <input type="hidden" id="edit-booking-id">
+                        <div class="mb-4">
+                            <label class="form-label text-gold fw-bold"><i class="fas fa-calendar me-1"></i>Event
+                                Date</label>
+                            <input type="date" id="edit-booking-date" class="form-control">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-gold fw-bold"><i class="fas fa-phone me-1"></i>Contact
+                                Phone</label>
+                            <input type="tel" id="edit-booking-phone" class="form-control">
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label text-gold fw-bold"><i class="fas fa-sticky-note me-1"></i>Special
+                                Notes</label>
+                            <textarea id="edit-booking-notes" class="form-control" rows="4"
+                                placeholder="Add any special requirements..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-top border-warning border-opacity-25 p-4">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="submitEditBooking()">
+                        <i class="fas fa-check me-2"></i>Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let editModal;
+        let isNavbarScrolled = false;
+
+        // EMERGENCY FIX: Unregister any broken service workers from previous sessions
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) {
+                    console.log('Unregistering broken service worker:', registration);
+                    registration.unregister();
+                }
+            });
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50 && !isNavbarScrolled) {
+                document.querySelector('.navbar').classList.add('scrolled');
+                isNavbarScrolled = true;
+            } else if (window.scrollY <= 50 && isNavbarScrolled) {
+                document.querySelector('.navbar').classList.remove('scrolled');
+                isNavbarScrolled = false;
+            }
+        });
+
+        window.addEventListener('load', async function () {
+            if (window.Clerk) {
+                await window.Clerk.load({
+                    appearance: {
+                        baseTheme: 'dark',
+                        variables: {
+                            colorPrimary: '#fcdc3b',
+                            borderRadius: '12px',
+                            fontFamily: "'Outfit', sans-serif",
+                            colorInputBackground: 'rgba(37, 3, 41, 0.8)'
+                        }
+                    }
+                });
+
+                if (!Clerk.user) {
+                    document.getElementById('loading').innerHTML = `
+                        <div class="text-center">
+                            <i class="fas fa-user-lock text-gold fs-1 mb-4"></i>
+                            <h3 class="text-white mb-4">Authentication Required</h3>
+                            <p class="text-muted mb-4">Please sign in to access your personalized dashboard</p>
+                            <button onclick="Clerk.openSignIn({ redirectUrl: 'user-dashboard.html' })" 
+                                    class="btn btn-warning px-5 py-3 fs-5 fw-bold">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sign In Now
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                Clerk.mountUserButton(document.getElementById('user-button'));
+                editModal = new bootstrap.Modal(document.getElementById('editBookingModal'));
+
+                // Set basic user info with animation
+                document.getElementById('display-name').textContent = Clerk.user.fullName || 'User';
+                document.getElementById('display-email').textContent = Clerk.user.primaryEmailAddress?.emailAddress || 'email@example.com';
+                // Use a reliable internal placeholder or data URI instead of external service
+                const defaultAvatar = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Crect width='140' height='140' fill='%23250329'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='60' fill='%23fcdc3b' text-anchor='middle' dy='.35em'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E";
+                document.getElementById('user-avatar').src = Clerk.user.imageUrl || defaultAvatar;
+
+                // Trigger animations
+                document.querySelectorAll('.animate__animated').forEach(el => {
+                    el.style.animationPlayState = 'running';
+                });
+
+                loadDashboardData();
+            }
+        });
+
+        async function loadDashboardData() {
+            try {
+                // Load profile data
+                const profileRes = await fetch(`/api/user/${Clerk.user.id}`);
+                const profileData = await profileRes.json();
+
+                if (profileRes.ok && profileData.email) {
+                    document.getElementById('prof-name').value = profileData.name || Clerk.user.fullName;
+                    document.getElementById('prof-phone').value = profileData.phone || '';
+                    document.getElementById('prof-age').value = profileData.age || '';
+                    document.getElementById('prof-address').value = profileData.location || '';
+                    document.getElementById('display-name').textContent = profileData.name || Clerk.user.fullName;
+
+                    if (profileData.profileImage) {
+                        document.getElementById('user-avatar').src = profileData.profileImage;
+                    }
+                }
+
+                // Load bookings data
+                const email = Clerk.user.primaryEmailAddress.emailAddress;
+                const bookingRes = await fetch(`/api/user-bookings/${email}`);
+                const bookings = await bookingRes.json();
+
+                calculateStats(bookings);
+                renderBookings(bookings);
+
+            } catch (err) {
+                console.error('Dashboard load error:', err);
+                document.getElementById('bookings-container').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle text-warning fs-1 mb-4"></i>
+                        <h5 class="text-muted">Unable to load data</h5>
+                        <p class="text-muted small">Please refresh the page or try again later</p>
+                    </div>
+                `;
+            } finally {
+                // Hide loading with animation
+                const loading = document.getElementById('loading');
+                loading.style.opacity = '0';
+                loading.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    document.getElementById('dashboard-content').style.display = 'block';
+                }, 300);
+            }
+        }
+
+        function calculateStats(bookings) {
+            const total = bookings.length;
+            const active = bookings.filter(b => !b.status || b.status.toLowerCase() === 'pending' || b.status.toLowerCase() === 'confirmed').length;
+
+            document.getElementById('total-bookings-count').textContent = total;
+            document.getElementById('active-bookings-count').textContent = active;
+
+            const stats = {
+                catering: bookings.filter(b => b.serviceType.toLowerCase().includes('catering')).length,
+                travels: bookings.filter(b => b.serviceType.toLowerCase().includes('travel') || b.serviceType.toLowerCase().includes('bus')).length,
+                photo: bookings.filter(b => b.serviceType.toLowerCase().includes('photo') || b.serviceType.toLowerCase().includes('camera')).length,
+                sweets: bookings.filter(b => b.serviceType.toLowerCase().includes('sweet') || b.serviceType.toLowerCase().includes('candy')).length
+            };
+
+            document.getElementById('stat-catering').textContent = stats.catering;
+            document.getElementById('stat-travels').textContent = stats.travels;
+            document.getElementById('stat-photo').textContent = stats.photo;
+            document.getElementById('stat-sweets').textContent = stats.sweets;
+        }
+
+        function renderBookings(bookings) {
+            const container = document.getElementById('bookings-container');
+
+            if (!bookings || bookings.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5 my-5">
+                        <i class="fas fa-calendar-times text-muted fs-1 mb-4"></i>
+                        <h5 class="text-muted mb-3">No bookings yet</h5>
+                        <p class="text-muted small mb-4">Get started by booking your first service</p>
+                        <a href="go.html" class="btn btn-warning px-5 py-2">
+                            <i class="fas fa-plus me-2"></i>Book Service
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = bookings.map((booking, index) => {
+                const delay = index * 100;
+                const statusColor = booking.status?.toLowerCase() === 'completed' ? 'success' :
+                    booking.status?.toLowerCase() === 'cancelled' ? 'danger' : 'warning';
+                const statusText = booking.status || 'Pending';
+
+                return `
+                    <div class="booking-row animate__animated animate__fadeInUp" style="animation-delay: ${delay}ms">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center w-100">
+                            <div class="flex-grow-1 me-md-4">
+                                <div class="booking-service">${booking.serviceType}</div>
+                                <div class="booking-date mb-2">
+                                    <i class="far fa-calendar-alt me-2"></i>
+                                    ${new Date(booking.date).toLocaleDateString('en-IN', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                })}
+                                </div>
+                                ${booking.details ? `<div class="text-muted small"><i class="fas fa-info-circle me-1"></i>${booking.details}</div>` : ''}
+                            </div>
+                            <div class="d-flex flex-column flex-md-row align-items-md-center mt-3 mt-md-0">
+                                <span class="badge bg-${statusColor} text-dark fw-bold px-3 py-2 mb-2 mb-md-0 me-md-3">${statusText}</span>
+                                <button class="action-btn" onclick="openEditModal(${JSON.stringify(booking)})">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteBooking('${booking._id}')">
+                                    <i class="fas fa-trash me-1"></i>Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Profile form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('clerkId', Clerk.user.id);
+            formData.append('email', Clerk.user.primaryEmailAddress.emailAddress);
+            formData.append('name', document.getElementById('prof-name').value);
+            formData.append('phone', document.getElementById('prof-phone').value);
+            formData.append('age', document.getElementById('prof-age').value);
+            formData.append('location', document.getElementById('prof-address').value);
+
+            // Handle profile image
+            if (document.getElementById('prof-image').files[0]) {
+                const file = document.getElementById('prof-image').files[0];
+                formData.append('profileImage', file);
+
+                if (window.Clerk?.user) {
+                    try {
+                        await window.Clerk.user.setProfileImage({ file });
+                    } catch (clerkErr) {
+                        console.warn('Clerk image sync failed:', clerkErr);
+                    }
+                }
+            }
+
+            try {
+                const res = await fetch('/api/user/update', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (res.ok) {
+                    btn.innerHTML = '<i class="fas fa-check me-2"></i>Saved!';
+                    btn.classList.add('btn-success');
+
+                    setTimeout(() => {
+                        alert('✅ Profile updated successfully!');
+                        window.location.reload();
+                    }, 800);
+                }
+            } catch (error) {
+                console.error('Profile update failed:', error);
+                alert('❌ Failed to update profile. Please try again.');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('user-avatar').src = e.target.result;
+                    document.getElementById('user-avatar').classList.add('animate__animated', 'animate__pulse');
+                    setTimeout(() => {
+                        document.getElementById('user-avatar').classList.remove('animate__pulse');
+                    }, 1000);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function openEditModal(booking) {
+            document.getElementById('edit-booking-id').value = booking._id;
+            document.getElementById('edit-booking-date').value = booking.date;
+            document.getElementById('edit-booking-phone').value = booking.phone || '';
+            document.getElementById('edit-booking-notes').value = booking.details || '';
+            editModal.show();
+        }
+
+        async function submitEditBooking() {
+            const id = document.getElementById('edit-booking-id').value;
+            const updates = {
+                date: document.getElementById('edit-booking-date').value,
+                phone: document.getElementById('edit-booking-phone').value,
+                details: document.getElementById('edit-booking-notes').value
+            };
+
+            try {
+                const response = await fetch(`/api/bookings/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updates)
+                });
+
+                if (response.ok) {
+                    alert('✅ Booking updated successfully!');
+                    editModal.hide();
+                    loadDashboardData();
+                }
+            } catch (error) {
+                console.error('Booking update failed:', error);
+                alert('❌ Failed to update booking');
+            }
+        }
+
+        async function deleteBooking(id) {
+            if (confirm('Are you sure you want to cancel this booking? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        alert('✅ Booking cancelled successfully!');
+                        loadDashboardData();
+                    }
+                } catch (error) {
+                    console.error('Delete failed:', error);
+                    alert('❌ Failed to cancel booking');
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

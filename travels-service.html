@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+        type="text/javascript"></script>
+    <title>Our Travel Fleet & Packages</title>
+
+    <style>
+        html {
+            /* Added for smooth scrolling */
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #19021C, #4a1a50);
+            background-attachment: fixed;
+            margin: 0;
+            padding-bottom: 4rem;
+        }
+
+        .navbar {
+            padding: 15px 24px;
+            background: linear-gradient(135deg, #19021C, #4a1a50);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #D4AF37;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #DAA520;
+        }
+
+        .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .joi {
+            padding: 6px 20px;
+            background-color: #D4AF37;
+            color: #001a29;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: inline-block;
+            box-shadow: 0 4px 18px #D4AF37;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .joi:hover {
+            background-color: #fff;
+            color: #001a29;
+            transform: scale(1.05);
+        }
+
+        .nav-item .joi {
+            margin-top: 0;
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background: linear-gradient(135deg, #19021C, #4a1a50);
+                backdrop-filter: blur(10px);
+                border-radius: 0 0 16px 16px;
+                box-shadow: 0 8px 22px rgba(0, 26, 41, 0.2);
+                margin-top: 10px;
+                padding: 10px;
+            }
+
+            .navbar-nav .nav-item {
+                text-align: center;
+            }
+        }
+
+        .navbar-nav .nav-link {
+            position: relative;
+            cursor: pointer;
+            font-weight: 900;
+            padding: 6px 10px !important;
+            font-size: 1rem;
+            color: white;
+            transition: color .3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 17px;
+            display: inline-block;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 20%;
+            bottom: 2px;
+            width: 60%;
+            height: 3px;
+            background: #D4AF37;
+            border-radius: 2px;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #DAA520;
+            background: rgba(218, 165, 32, 0.08);
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .navbar-nav .nav-link.active {
+            color: #DAA520;
+        }
+
+        .navbar-nav .nav-link.active::after {
+            transform: scaleX(1);
+        }
+
+        .navbar-nav .nav-link.active:hover {
+            background: none;
+        }
+
+        @media (min-width: 992px) {
+            .nav-item:not(:last-child) {
+                margin-right: 26px;
+            }
+
+            .navbar-nav.mx-auto {
+                flex-grow: 1;
+                justify-content: center;
+            }
+
+            .navbar-nav.mx-auto .nav-item {
+                margin: 0 18px;
+            }
+        }
+
+        /* --- HERO CAROUSEL STYLES --- */
+        .hero-carousel-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 26, 41, 0.37);
+            border-radius: 22px;
+            padding: 1rem;
+        }
+
+        #heroCarousel {
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        #heroCarousel .carousel-item img {
+            height: 680px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            #heroCarousel .carousel-item img {
+                height: 300px;
+            }
+        }
+
+        /* --- REDESIGNED H1 STYLES --- */
+        h1 {
+            color: #DAA520;
+            margin-top: 2rem;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            font-size: 3rem;
+            text-shadow: 0 0 20px rgba(218, 165, 32, 0.5);
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.3rem;
+            }
+        }
+
+        /* --- VEHICLE PACKAGE BOX STYLES --- */
+        .package-showcase-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 26, 41, 0.37);
+            border-radius: 22px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            color: white;
+            min-height: 350px;
+            margin-top: 50px;
+        }
+
+        .package-showcase-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 16px 40px 0 rgba(0, 26, 41, 0.5);
+            border-color: rgba(218, 165, 32, 0.7);
+        }
+
+        .package-image-pane {
+            flex: 1;
+            position: relative;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .package-image-pane img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .package-content-pane {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .package-content-pane h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #DAA520;
+            margin-bottom: 1rem;
+        }
+
+        .package-content-pane p {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 991.98px) {
+            .package-showcase-box {
+                flex-direction: column;
+            }
+
+            .package-content-pane {
+                min-height: auto;
+                padding: 30px;
+            }
+
+            .package-image-pane img {
+                height: 250px;
+                object-fit: contain;
+            }
+        }
+
+        /* --- STYLES FOR BUTTONS --- */
+        .btn-offer {
+            background-color: #DAA520;
+            color: #001a29;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-offer:hover {
+            background-color: #fff;
+            color: #001a29;
+            transform: scale(1.05);
+        }
+
+        .btn-offer .bi {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .btn-offer[aria-expanded="true"] .bi {
+            transform: rotate(180deg);
+        }
+
+        .offers-container {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(218, 165, 32, 0.3);
+        }
+
+        .offer-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(218, 165, 32, 0.2);
+        }
+
+        .offer-item strong {
+            color: #DAA520;
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .offer-item span {
+            font-size: 1rem;
+            color: #e0e0e0;
+        }
+
+        .sample-images-title {
+            color: #DAA520;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(218, 165, 32, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .sample-carousel {
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(218, 165, 32, 0.3);
+        }
+
+        .sample-carousel .carousel-item img {
+            height: 220px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        /* --- REDESIGNED VEHICLE LIST STYLES --- */
+        .vehicle-container {
+            width: 100%;
+            max-width: 1300px;
+            animation: fadeIn 1.2s ease-out;
+            margin: 0 auto 3rem auto;
+            padding: 0 15px;
+        }
+
+        .vehicle-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+            justify-content: center;
+            gap: 2.2rem;
+            padding: 0;
+            list-style: none;
+            color: white;
+        }
+
+        .vehicle-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            backdrop-filter: blur(12px);
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(218, 165, 32, 0.15);
+            transition: 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vehicle-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(218, 165, 32, 0.15), transparent 60%);
+            transform: scale(0);
+            transition: .5s;
+        }
+
+        .vehicle-card:hover::before {
+            transform: scale(1);
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            border-color: #D4AF37;
+            box-shadow: 0 0 35px rgba(218, 165, 32, 0.4);
+        }
+
+        .vehicle-icon {
+            font-size: 3.8rem;
+            margin-bottom: 1.2rem;
+            color: #D4AF37;
+            filter: drop-shadow(0 0 10px rgba(218, 165, 32, .6));
+        }
+
+        .vehicle-card h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: .5rem;
+        }
+
+        .vehicle-card p {
+            font-size: 1rem;
+            opacity: 0.86;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* --- NEW STYLES FOR PACKAGE CARDS (from second file) --- */
+        .plan-card-section {
+            padding-top: 3rem;
+        }
+
+        .plan-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 25px rgba(218, 165, 32, 0.15);
+            transition: 0.4s ease;
+            overflow: hidden;
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            border-color: #D4AF37;
+            box-shadow: 0 0 35px rgba(218, 165, 32, 0.4);
+        }
+
+        .plan-card .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(218, 165, 32, 0.3);
+        }
+
+        .plan-card .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan-card .card-title {
+            color: #DAA520;
+            font-weight: bold;
+        }
+
+        .plan-card .card-text {
+            color: #e0e0e0;
+            opacity: 0.9;
+        }
+
+        .plan-card .badge {
+            background-color: rgba(218, 165, 32, 0.2) !important;
+            color: #D4AF37 !important;
+            font-weight: 500;
+        }
+
+        .plan-card .list-group-item {
+            background: transparent;
+            border-color: rgba(218, 165, 32, 0.2);
+            color: #e0e0e0;
+        }
+
+        .plan-card .list-group-item .bi {
+            color: #DAA520;
+            /* Golden icon */
+            margin-right: 8px;
+        }
+
+        .plan-card .list-group {
+            flex-grow: 1;
+            /* Pushes button to bottom */
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* --- NEW STYLES FOR "WHY CHOOSE US" (from second file) --- */
+        .features-section {
+            padding: 4rem 0;
+            margin-top: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(218, 165, 32, 0.3);
+            border-bottom: 1px solid rgba(218, 165, 32, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #D4AF37;
+            filter: drop-shadow(0 0 10px rgba(218, 165, 32, .6));
+        }
+
+        .features-section h5 {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .features-section p {
+            color: #e0e0e0;
+            opacity: 0.9;
+        }
+
+        /* --- NEW STYLES FOR FOOTER (from second file) --- */
+        .site-footer {
+            background: linear-gradient(135deg, #19021C, #4a1a50);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #D4AF37;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="logo-removebg-preview.png" height="48" alt="Travel Co Logo"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('index.html')">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" onclick="navigateTo('travels-service.html')">Travels</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#packages-section">Package</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('contact.html')">Contact</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('about.html')">About Us</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class='nav-link' href='/join'><span class="joi">Join Us</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <h1 style="color: #D4AF37;"> The Vehicles We Provide</h1>
+
+    <div class="vehicle-container">
+        <ul class="vehicle-list">
+
+            <li class="vehicle-card">
+                <i class="bi bi-bus-front vehicle-icon"></i>
+                <h2>54 Seat Bus</h2>
+                <p>Disco lights & music system for trips</p>
+            </li>
+
+            <li class="vehicle-card">
+                <i class="bi bi-bus-front vehicle-icon"></i>
+                <h2>24 Seat Bus</h2>
+                <p>Perfect for family & tour groups</p>
+            </li>
+
+            <li class="vehicle-card">
+                <i class="bi bi-truck-front vehicle-icon"></i>
+                <h2>12 Seat Bus</h2>
+                <p>Comfortable for mid-size travel groups</p>
+            </li>
+
+            <li class="vehicle-card">
+                <i class="bi bi-car-front-fill vehicle-icon"></i>
+                <h2>7 Seat Car</h2>
+                <p>Air-conditioned & premium comfort</p>
+            </li>
+
+            <li class="vehicle-card">
+                <i class="bi bi-car-front-fill vehicle-icon"></i>
+                <h2>4 Seat Car</h2>
+                <p>Perfect for city or long trips</p>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <div class="container my-4">
+        <div class="hero-carousel-container">
+            <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="52 main.jpg" class="d-block w-100" alt="54 Seater Bus">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="22 main.jpg" class="d-block w-100" alt="22 Seater Bus">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="12 main.webp" class="d-block w-100" alt="12 Seater TT">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="7 main.avif" class="d-block w-100" alt="7 Seater SUV">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="4 main.avif" class="d-block w-100" alt="4 Seater Sedan">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <h1>Explore Our Fleet</h1>
+
+    <div class="container my-5">
+        <div class="row g-4 justify-content-center" id="vehicleAccordion">
+
+            <div class="col-lg-10">
+                <div class="package-showcase-box">
+                    <div class="package-image-pane">
+                        <img src="52 main.jpg" alt="54 Seater Bus">
+                    </div>
+                    <div class="package-content-pane">
+                        <h2>54 Seater Coach Bus</h2>
+                        <p>Ideal for large groups, corporate events, and long-distance tours. Offers maximum comfort and
+                            luggage space.</p>
+                        <button type="button" class="btn-offer" data-bs-toggle="collapse" data-bs-target="#offersBus54"
+                            aria-expanded="false" aria-controls="offersBus54">
+                            View Offers <i class="bi bi-chevron-down ms-2"></i>
+                        </button>
+
+                        <div class="collapse offers-container" id="offersBus54" data-bs-parent="#vehicleAccordion">
+
+                            <h5 class="sample-images-title">Sample Images</h5>
+                            <div id="carouselBus54_sample" class="carousel slide sample-carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselBus54_sample" data-bs-slide-to="0"
+                                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselBus54_sample" data-bs-slide-to="1"
+                                        aria-label="Slide 2"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="52 sample 1.jpg" class="d-block w-100" alt="Bus Exterior">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="52 sample 2.webp" class="d-block w-100" alt="Bus Interior">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselBus54_sample" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselBus54_sample" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <div class="offer-item">
+                                <strong>3 Day Package (12% Offer)</strong>
+                                <span>Amount: ₹8,000</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>5 Day Package (15% Offer)</strong>
+                                <span>Amount: ₹12,500</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>1 Day Package (5% Offer)</strong>
+                                <span>Amount: ₹3,000</span>
+                            </div>
+                            <!-- Added Booking Button inside the offers/details view -->
+                            <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                                onclick="openBookingModal('54 Seater Bus')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-10">
+                <div class="package-showcase-box">
+                    <div class="package-image-pane">
+                        <img src="22 main.jpg" alt="22 Seater Mini-Bus">
+                    </div>
+                    <div class="package-content-pane">
+                        <h2>22 Seater Mini-Bus</h2>
+                        <p>A great balance of capacity and agility. Perfect for mid-sized groups, family functions, and
+                            team outings.</p>
+                        <button type="button" class="btn-offer" data-bs-toggle="collapse" data-bs-target="#offersBus22"
+                            aria-expanded="false" aria-controls="offersBus22">
+                            View Offers <i class="bi bi-chevron-down ms-2"></i>
+                        </button>
+
+                        <div class="collapse offers-container" id="offersBus22" data-bs-parent="#vehicleAccordion">
+
+                            <h5 class="sample-images-title">Sample Images</h5>
+                            <div id="carouselBus22" class="carousel slide sample-carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselBus22" data-bs-slide-to="0"
+                                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselBus22" data-bs-slide-to="1"
+                                        aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#carouselBus22" data-bs-slide-to="2"
+                                        aria-label="Slide 3"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="22 sample 1.avif" class="d-block w-100" alt="Minibus Exterior">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="22 sample 2.avif" class="d-block w-100" alt="Minibus Interior">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="22 sample 3.jpg" class="d-block w-100" alt="Minibus Side View">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselBus22"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselBus22"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <div class="offer-item">
+                                <strong>3 Day Package (10% Offer)</strong>
+                                <span>Amount: ₹6,000</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>5 Day Package (12% Offer)</strong>
+                                <span>Amount: ₹9,500</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>1 Day Package (5% Offer)</strong>
+                                <span>Amount: ₹2,200</span>
+                            </div>
+                            <!-- Added Booking Button -->
+                            <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                                onclick="openBookingModal('22 Seater Mini-Bus')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-10">
+                <div class="package-showcase-box">
+                    <div class="package-image-pane">
+                        <img src="12 main.webp" alt="12 Seater TT">
+                    </div>
+                    <div class="package-content-pane">
+                        <h2>12 Seater Tempo Traveller</h2>
+                        <p>The perfect choice for small groups and extended family trips. Comfortable and efficient for
+                            any journey.</p>
+                        <button type="button" class="btn-offer" data-bs-toggle="collapse" data-bs-target="#offersTT12"
+                            aria-expanded="false" aria-controls="offersTT12">
+                            View Offers <i class="bi bi-chevron-down ms-2"></i>
+                        </button>
+
+                        <div class="collapse offers-container" id="offersTT12" data-bs-parent="#vehicleAccordion">
+
+                            <h5 class="sample-images-title">Sample Images</h5>
+                            <div id="carouselTT12" class="carousel slide sample-carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselTT12" data-bs-slide-to="0"
+                                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselTT12" data-bs-slide-to="1"
+                                        aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#carouselTT12" data-bs-slide-to="2"
+                                        aria-label="Slide 3"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="12 sample 1.webp" class="d-block w-100"
+                                            alt="Tempo Traveller Exterior">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="12 sample 2.jpeg" class="d-block w-100"
+                                            alt="Tempo Traveller Interior">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="12 sample 3.webp" class="d-block w-100" alt="Tempo Traveller Seats">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselTT12"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselTT12"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <div class="offer-item">
+                                <strong>3 Day Package (10% Offer)</strong>
+                                <span>Amount: ₹5,000</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>5 Day Package (12% Offer)</strong>
+                                <span>Amount: ₹8,000</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>1 Day Package (5% Offer)</strong>
+                                <span>Amount: ₹1,800</span>
+                            </div>
+                            <!-- Added Booking Button -->
+                            <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                                onclick="openBookingModal('12 Seater Tempo Traveller')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-10">
+                <div class="package-showcase-box">
+                    <div class="package-image-pane">
+                        <img src="7 main.avif" alt="7 Seater Car">
+                    </div>
+                    <div class="package-content-pane">
+                        <h2>7 Seater SUV/MUV</h2>
+                        <p>Spacious and rugged. Ideal for larger families, group airport transfers, or adventurous road
+                            trips.</p>
+                        <button type="button" class="btn-offer" data-bs-toggle="collapse" data-bs-target="#offersSUV7"
+                            aria-expanded="false" aria-controls="offersSUV7">
+                            View Offers <i class="bi bi-chevron-down ms-2"></i>
+                        </button>
+
+                        <div class="collapse offers-container" id="offersSUV7" data-bs-parent="#vehicleAccordion">
+
+                            <h5 class="sample-images-title">Sample Images</h5>
+                            <div id="carouselSUV7" class="carousel slide sample-carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselSUV7" data-bs-slide-to="0"
+                                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselSUV7" data-bs-slide-to="1"
+                                        aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#carouselSUV7" data-bs-slide-to="2"
+                                        aria-label="Slide 3"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="7 sample 1.jpg" class="d-block w-100" alt="SUV Exterior">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="7 sample 2.avif" class="d-block w-100" alt="SUV Interior">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="7 sample 3.png" class="d-block w-100" alt="SUV 7 Seats">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselSUV7"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselSUV7"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <div class="offer-item">
+                                <strong>3 Day Package (8% Offer)</strong>
+                                <span>Amount: ₹4,500</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>5 Day Package (10% Offer)</strong>
+                                <span>Amount: ₹7,000</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>1 Day Package (5% Offer)</strong>
+                                <span>Amount: ₹1,500</span>
+                            </div>
+                            <!-- Added Booking Button -->
+                            <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                                onclick="openBookingModal('7 Seater SUV')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-10">
+                <div class="package-showcase-box">
+                    <div class="package-image-pane">
+                        <img src="4 main.avif" alt="4 Seater Car">
+                    </div>
+                    <div class="package-content-pane">
+                        <h2>4 Seater Sedan</h2>
+                        <p>Perfect for executive travel, airport transfers, or small families. Ride in comfort and
+                            style.</p>
+                        <button type="button" class="btn-offer" data-bs-toggle="collapse" data-bs-target="#offersSedan4"
+                            aria-expanded="false" aria-controls="offersSedan4">
+                            View Offers <i class="bi bi-chevron-down ms-2"></i>
+                        </button>
+
+                        <div class="collapse offers-container" id="offersSedan4" data-bs-parent="#vehicleAccordion">
+
+                            <h5 class="sample-images-title">Sample Images</h5>
+                            <div id="carouselSedan4" class="carousel slide sample-carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselSedan4" data-bs-slide-to="0"
+                                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselSedan4" data-bs-slide-to="1"
+                                        aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#carouselSedan4" data-bs-slide-to="2"
+                                        aria-label="Slide 3"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="4 sample 1.jpeg" class="d-block w-100" alt="Sedan Exterior">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="4 sample 2.jpeg" class="d-block w-100" alt="Sedan Interior">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="4 sample 3.jpeg" class="d-block w-100" alt="Sedan Back Seats">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselSedan4"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselSedan4"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <div class="offer-item">
+                                <strong>3 Day Package (8% Offer)</strong>
+                                <span>Amount: ₹3,500</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>5 Day Package (10% Offer)</strong>
+                                <span>Amount: ₹5,500</span>
+                            </div>
+                            <div class="offer-item">
+                                <strong>1 Day Package (5% Offer)</strong>
+                                <span>Amount: ₹1,200</span>
+                            </div>
+                            <!-- Added Booking Button -->
+                            <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                                onclick="openBookingModal('4 Seater Sedan')">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="container plan-card-section" id="packages-section">
+        <h1>Explore Our Packages</h1>
+
+        <div class="row g-4">
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 plan-card">
+                    <img src="temple main.avif" class="card-img-top" alt="Tamil Nadu Temple">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title">Divine Temple Tour</h5>
+                            <span class="badge">Tamil Nadu</span>
+                        </div>
+                        <p class style="color: #e0e0e0;">Experience the spiritual heart of South India with visits
+                            to ancient and majestic temples.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Madurai Meenakshi Temple
+                            </li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Rameswaram Temple</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Kanchipuram Temples</li>
+                        </ul>
+                        <!-- Added Booking Button -->
+                        <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                            onclick="openBookingModal('Divine Temple Tour')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 plan-card">
+                    <img src="beach.jpg" class="card-img-top" alt="Tamil Nadu Beach">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title">Beach</h5>
+                            <span class="badge">Tamil Nadu</span>
+                        </div>
+                        <p class style="color: #e0e0e0;">Relax and unwind on the beautiful shores of the Bay of
+                            Bengal and the Indian Ocean.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Marina Beach, Chennai
+                            </li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Mahabalipuram Shore</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Kanyakumari</li>
+                        </ul>
+                        <!-- Added Booking Button -->
+                        <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                            onclick="openBookingModal('Beach Package')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 plan-card">
+                    <img src="ooty.jpg" class="card-img-top" alt="Tamil Nadu Hills">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title"> Hills stations</h5>
+                            <span class="badge">Tamil Nadu</span>
+                        </div>
+                        <p class style="color: #e0e0e0;">Breathe in the fresh mountain air and enjoy the stunning
+                            vistas of Tamil Nadu's hill stations.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Ooty</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Kodaikanal</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Yercaud</li>
+                        </ul>
+                        <!-- Added Booking Button -->
+                        <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                            onclick="openBookingModal('Hills Stations Package')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 plan-card">
+                    <img src="temple.jpg" class="card-img-top" alt="Thanjavur Temple">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title">Chola temple</h5>
+                            <span class="badge">Tamil Nadu</span>
+                        </div>
+                        <p class style="color: #e0e0e0;">Explore the UNESCO World Heritage "Great Living Chola
+                            Temples" and timeless architecture.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Thanjavur Big Temple</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Gangaikonda Cholapuram
+                            </li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Darasuram Temple</li>
+                        </ul>
+                        <!-- Added Booking Button -->
+                        <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                            onclick="openBookingModal('Chola Temple Tour')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 plan-card">
+                    <img src="zoo.jpeg" class="card-img-top" alt="Wildlife Safari">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title">Zoo</h5>
+                            <span class="badge">Tamil Nadu</span>
+                        </div>
+                        <p class style="color: #e0e0e0;">Experience thrilling safaris and witness the rich
+                            biodiversity of the Nilgiri Biosphere.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Mudumalai Tiger Reserve
+                            </li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Anamalai Tiger Reserve
+                                (Topslip)</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Megamalai Sanctuary</li>
+                        </ul>
+                        <!-- Added Booking Button -->
+                        <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                            onclick="openBookingModal('Zoo & Wildlife Package')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 plan-card">
+                    <img src="kerala.webp" class="card-img-top" alt="Kerala">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title">Kerala Backwater Bliss</h5>
+                            <span class="badge"
+                                style="background-color: rgba(25, 135, 84, 0.2) !important; color: #198754 !important;">Kerala</span>
+                        </div>
+                        <p class style="color: #e0e0e0;">Discover "God's Own Country" with its serene backwaters,
+                            lush tea gardens, and vibrant culture.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Alleppey Houseboat</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Munnar Tea Estates</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle-fill"></i>Thekkady Wildlife</li>
+                        </ul>
+                        <!-- Added Booking Button -->
+                        <button type="button" class="btn btn-warning mt-3 w-100 fw-bold"
+                            onclick="openBookingModal('Kerala Package')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <section class="features-section">
+        <div class="container">
+
+            <div class="row text-center g-4">
+                <div class="col-md-4">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-patch-check-fill"></i>
+                    </div>
+                    <h5>Expert Guides</h5>
+                    <p>Our local guides are passionate and knowledgeable, ensuring you get an
+                        authentic experience.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-car-front-fill"></i>
+                    </div>
+                    <h5>Comfortable Travel</h5>
+                    <p>We provide modern, air-conditioned vehicles for all your travel needs,
+                        ensuring a safe journey.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h5>24/7 Support</h5>
+                    <p>Our team is available around the clock to assist you with any queries or needs
+                        during your trip.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Modal (Enhanced Premium Design) -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content"
+                style="background: linear-gradient(135deg, rgba(25, 2, 28, 0.98), rgba(40, 10, 45, 0.98)); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 24px; backdrop-filter: blur(20px); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding: 2rem;">
+                    <div>
+                        <h4 class="modal-title"
+                            style="color: #D4AF37; font-weight: 700; font-size: 1.8rem; margin-bottom: 0.5rem;">
+                            <i class="bi bi-bus-front me-2"></i>Book Your Trip
+                        </h4>
+                        <p class="mb-0" style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">Fill in the details
+                            below to confirm your travel reservation</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+                        style="opacity: 0.8;"></button>
+                </div>
+                <div class="modal-body" style="padding: 2.5rem;">
+                    <div class="text-center mb-4 p-3"
+                        style="background: rgba(212, 175, 55, 0.1); border-radius: 16px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                        <h5 id="selectedService" class="mb-0"
+                            style="color: #D4AF37; font-weight: 600; font-size: 1.3rem;"></h5>
+                    </div>
+
+                    <form id="bookingForm" onsubmit="handleBooking(event)">
+                        <div class="row g-4">
+                            <!-- Personal Information Section -->
+                            <div class="col-12">
+                                <div class="section-divider mb-3">
+                                    <i class="bi bi-person-circle me-2" style="color: #D4AF37;"></i>
+                                    <span style="color: #D4AF37; font-weight: 600; font-size: 1.1rem;">Personal
+                                        Information</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="name" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-person me-1" style="color: #D4AF37;"></i>Full Name
+                                </label>
+                                <input type="text" class="form-control" id="name" required
+                                    placeholder="Enter your full name"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px; transition: all 0.3s;">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="age" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-calendar3 me-1" style="color: #D4AF37;"></i>Age
+                                </label>
+                                <input type="number" class="form-control" id="age" required placeholder="Your age"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px;">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-telephone me-1" style="color: #D4AF37;"></i>Phone Number
+                                </label>
+                                <input type="tel" class="form-control" id="phone" required
+                                    placeholder="Enter phone number"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px;">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="age" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-calendar3 me-1" style="color: #D4AF37;"></i>Age
+                                </label>
+                                <input type="number" class="form-control" id="age" required placeholder="Your age"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px;">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="email" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-envelope me-1" style="color: #D4AF37;"></i>Email Address
+                                </label>
+                                <input type="email" class="form-control" id="email" required
+                                    placeholder="your@email.com"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px;">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="address" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-geo-alt me-1" style="color: #D4AF37;"></i>Address
+                                </label>
+                                <textarea class="form-control" id="address" required
+                                    placeholder="Enter your complete address" rows="2"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px;"></textarea>
+                            </div>
+
+                            <!-- Travel Details Section -->
+                            <div class="col-12 mt-4">
+                                <div class="section-divider mb-3">
+                                    <i class="bi bi-map me-2" style="color: #D4AF37;"></i>
+                                    <span style="color: #D4AF37; font-weight: 600; font-size: 1.1rem;">Travel
+                                        Details</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="date" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-calendar-date me-1" style="color: #D4AF37;"></i>Travel Date
+                                </label>
+                                <input type="date" class="form-control" id="date" required
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px; color-scheme: dark;">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="travelDuration" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-clock me-1" style="color: #D4AF37;"></i>Number of Days
+                                </label>
+                                <input type="number" class="form-control" id="travelDuration" required
+                                    placeholder="Duration in days"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px;">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="pickupLocation" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-geo me-1" style="color: #D4AF37;"></i>Pickup Location
+                                </label>
+                                <input type="text" class="form-control" id="pickupLocation" required
+                                    placeholder="Enter pickup location"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px;">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="dropDestination" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-geo-alt-fill me-1" style="color: #D4AF37;"></i>Drop Destination
+                                </label>
+                                <input type="text" class="form-control" id="dropDestination" required
+                                    placeholder="Enter drop destination"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px;">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="passengerCount" class="form-label"
+                                    style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <i class="bi bi-people me-1" style="color: #D4AF37;"></i>Passenger Count
+                                </label>
+                                <input type="number" class="form-control" id="passengerCount" required
+                                    placeholder="Number of passengers"
+                                    style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: white; padding: 0.75rem 1rem; border-radius: 12px;">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn w-100 mt-4"
+                            style="background: linear-gradient(135deg, #D4AF37, #ffed4a); color: #19021C; font-weight: 700; padding: 1rem; border-radius: 12px; border: none; font-size: 1.1rem; transition: all 0.3s; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);"
+                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 30px rgba(212, 175, 55, 0.4)';"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(212, 175, 55, 0.3)';">
+                            <i class="bi bi-check-circle me-2"></i>Confirm Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .form-control:focus,
+        .form-select:focus {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-color: #D4AF37 !important;
+            box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25) !important;
+            color: white !important;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .section-divider {
+            display: flex;
+            align-items: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+        }
+    </style>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content"
+                style="background: rgba(25, 2, 28, 0.95); border: 1px solid #DAA520; color: white; text-align: center; backdrop-filter: blur(10px);">
+                <div class="modal-body p-5">
+                    <div style="font-size: 3rem; color: #DAA520; margin-bottom: 20px;">
+                        <i class="bi bi-check-circle-fill"></i>
+                        &#10004;
+                    </div>
+                    <h3 style="color: #DAA520; font-weight: bold; margin-bottom: 15px;">Thank You Sir!</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 10px;">Your booking offer is confirmed.</p>
+                    <p style="color: #D4AF37;">Our team will reach you soon.</p>
+                    <button type="button" class="btn btn-warning mt-4 fw-bold" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Navigation Function
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // --- JAVASCRIPT for Button Text ---
+        // This script changes the button text from "View Offers" to "Hide Offers"
+
+        // Get all the collapse elements that are part of the accordion
+        const collapseElements = document.querySelectorAll('.collapse[data-bs-parent="#vehicleAccordion"]');
+
+        collapseElements.forEach(el => {
+
+            // When a collapse section starts to open...
+            el.addEventListener('show.bs.collapse', event => {
+                // event.relatedTarget is the button that was clicked
+                const triggerButton = event.relatedTarget;
+                if (triggerButton) {
+                    // Change only the text part of the button, leaving the icon
+                    triggerButton.firstChild.nodeValue = 'Hide Offers ';
+                }
+            });
+
+            // When a collapse section starts to close...
+            el.addEventListener('hide.bs.collapse', event => {
+                // Check if the event was triggered by a button (it might be triggered by another collapse opening)
+                if (event.relatedTarget) {
+                    const triggerButton = event.relatedTarget;
+                    // Change the text back
+                    triggerButton.firstChild.nodeValue = 'View Offers ';
+                } else {
+                    // If closed by accordion, find its *own* button and reset it
+                    const ownButton = document.querySelector(`[data-bs-target="#${el.id}"]`);
+                    if (ownButton) {
+                        ownButton.firstChild.nodeValue = 'View Offers ';
+                    }
+                }
+            });
+        });
+
+        // The JavaScript for the booking modal from the second file has been removed as requested.
+
+        // --- ADDED BOOKING MODAL LOGIC ---
+        const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+
+        // Initialize Clerk
+        window.addEventListener('load', async function () {
+            const clerkKey = 'pk_test_ZXZvbHZlZC1ib2EtMS5jbGVyay5hY2NvdW50cy5kZXYk';
+            if (window.Clerk) {
+                try {
+                    await Clerk.load({ publishableKey: clerkKey });
+                } catch (err) {
+                    console.error('Clerk load error:', err);
+                }
+            }
+        });
+
+        async function openBookingModal(itemTitle) {
+            document.getElementById('selectedService').textContent = itemTitle;
+
+            // Auto-fill logic from MongoDB + Clerk
+            if (window.Clerk && Clerk.user) {
+                try {
+                    const res = await fetch(`/api/user/${Clerk.user.id}`);
+                    const user = await res.json();
+
+                    if (user && (user.clerkId || user.email)) {
+                        if (document.getElementById('name')) document.getElementById('name').value = user.name || Clerk.user.fullName || '';
+                        if (document.getElementById('email')) document.getElementById('email').value = user.email || Clerk.user.primaryEmailAddress.emailAddress || '';
+                        if (document.getElementById('phone')) document.getElementById('phone').value = user.phone || '';
+                        if (document.getElementById('address')) document.getElementById('address').value = user.location || '';
+                        if (document.getElementById('age')) document.getElementById('age').value = user.age || '';
+                    } else {
+                        if (document.getElementById('name')) document.getElementById('name').value = Clerk.user.fullName || '';
+                        if (document.getElementById('email')) document.getElementById('email').value = Clerk.user.primaryEmailAddress.emailAddress || '';
+                    }
+                } catch (e) {
+                    console.error("Error fetching profile:", e);
+                }
+            }
+            bookingModal.show();
+        }
+
+        function handleBooking(event) {
+            event.preventDefault(); // CRITICAL: Prevent form from submitting traditionally
+
+            const bookingData = {
+                serviceType: 'Travels',
+                serviceName: document.getElementById('selectedService').textContent,
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                address: document.getElementById('address').value,
+                date: document.getElementById('date').value,
+                pickupLocation: document.getElementById('pickupLocation').value,
+                dropDestination: document.getElementById('dropDestination').value,
+                travelDuration: document.getElementById('travelDuration').value,
+                passengerCount: document.getElementById('passengerCount').value
+            };
+
+            console.log('📦 Sending booking data:', bookingData); // Debug log
+
+            fetch('/api/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bookingData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('✅ Booking saved:', data); // Debug log
+                    // Hide booking modal
+                    bookingModal.hide();
+                    document.getElementById('bookingForm').reset();
+
+                    // Show success modal
+                    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                    successModal.show();
+                })
+                .catch((error) => {
+                    console.error('❌ Booking error:', error);
+                    alert('There was an error processing your booking. Please try again.');
+                });
+        }
+
+    </script>
+
+</body>
+
+</html>
